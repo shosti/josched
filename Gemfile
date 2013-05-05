@@ -2,12 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'sqlite3'
-
-
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -17,12 +11,20 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'rspec-rails'
-  gem 'guard-rspec'
-  gem 'factory_girl_rails'
-  gem 'database_cleaner'
-  gem 'capybara'
+  gem 'rspec-rails', '2.13.1'
+  gem 'guard-rspec', '2.6.0'
+  gem 'factory_girl_rails', '4.2.1'
+  gem 'database_cleaner', '0.9.1'
+  gem 'capybara', '2.1.0'
+  gem 'sqlite3', '1.3.7'
+  gem 'turnip', '1.1.0'
 end
 
-gem 'jquery-rails'
+group :production do
+  gem 'pg', '0.15.1'
+end
+
+gem 'jquery-rails', '2.2.1'
+gem 'bootstrap-sass', '2.3.1.0'
+gem 'haml-rails', '0.4'
 gem 'clearance', '1.0.0.rc7'

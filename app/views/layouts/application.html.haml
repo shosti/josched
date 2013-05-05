@@ -1,0 +1,29 @@
+!!!
+%html
+  %head
+    %title JoSched
+    = stylesheet_link_tag "application", media: "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    .container-narrow
+      .masthead
+        %ul.nav.nav-pills.pull-right
+          - if signed_in?
+            %li
+              = link_to current_user.email, '#' # TODO: link to user page
+            %li
+              = link_to 'Sign out', sign_out_path, method: :delete
+          - else
+            %li
+              = link_to 'Sign in', sign_in_path
+        %h3.muted
+          = link_to 'JoSched', root_path
+      #flash
+      - flash.each do |key, value|
+        %div{class: "flash #{key}"}
+          = value
+
+      = yield
+      .footer
+        %p Copyright © 2013 Emanuel Evans
