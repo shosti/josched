@@ -14,4 +14,15 @@ describe Event do
     expect(Event.min_to_time(4 * 60 + 5)).to eql('8:05 AM')
     expect(Event.min_to_time(13 * 60 + 30)).to eql('5:30 PM')
   end
+
+  describe "should be findable by date" do
+    before do
+      5.times { create(:event, date: 3.weeks.ago) }
+      2.times { create(:event, date: 3.weeks.ago.to_date) }
+    end
+
+    specify do
+      expect(Event.find_all_by_date(3.weeks.ago.to_date).count).to eql(7)
+    end
+  end
 end

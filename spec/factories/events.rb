@@ -7,10 +7,18 @@ FactoryGirl.define do
     n.days.ago
   end
 
+  factory :event do
+    name
+    user
+    start_time '3:00 PM'
+    end_time '5:00 PM'
+    date
+  end
+
   factory :appointment do
     name
-    start_min 0
-    end_min 60
+    start_time '3:00 PM'
+    end_time '5:00 PM'
     date
     user
   end

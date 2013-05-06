@@ -11,6 +11,7 @@ class Event < ActiveRecord::Base
 
   after_initialize :set_time_mins
   before_validation :set_time_mins
+  before_validation :normalize_date
   validates :name, presence: true
   validates :date, presence: true
   validates :user_id, presence: true
@@ -43,6 +44,12 @@ class Event < ActiveRecord::Base
   end
 
   private
+
+  def normalize_date
+    unless self.date.is_a? Date
+      self.date = self.date.to_date
+    end
+  end
 
   def set_time_mins
     if start_time && start_time != ""
