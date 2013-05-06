@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/cldwalker/debugger
+  revision: 4a61b42da6ac6c4da06b0db62bbe2a35c14e706f
+  specs:
+    debugger (1.5.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -51,7 +60,10 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.2)
+    columnize (0.3.6)
     database_cleaner (0.9.1)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.0)
     diff-lcs (1.2.4)
     email_validator (1.4.0)
       activemodel
@@ -190,6 +202,7 @@ DEPENDENCIES
   clearance (= 1.0.0.rc7)
   coffee-rails (= 3.2.1)
   database_cleaner (= 0.9.1)
+  debugger!
   factory_girl_rails (= 4.2.1)
   guard-rspec (= 2.6.0)
   haml-rails (= 0.4)

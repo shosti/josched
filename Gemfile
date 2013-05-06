@@ -18,6 +18,7 @@ group :development, :test do
   gem 'capybara', '2.1.0'
   gem 'sqlite3', '1.3.7'
   gem 'turnip', '1.1.0'
+  gem 'debugger', git: "git://github.com/cldwalker/debugger"
 end
 
 group :production do
