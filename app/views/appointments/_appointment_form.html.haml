@@ -1,4 +1,4 @@
-= form_for [current_user, appointment] do |f|
+= form_for [current_user, @appointment] do |f|
   = f.label :name
   = f.text_field :name
   = f.label :location
@@ -6,9 +6,9 @@
   = f.label :date
   = f.text_field :date, type: 'date'
   = f.label :start_time
-  = f.text_field :start_time, type: 'time', value: format_rfc_time(appointment.start_time)
+  = f.text_field :start_time, type: 'time', value: format_rfc_time(@appointment.start_time)
   = f.label :end_time
-  = f.text_field :end_time, type: 'time', value: format_rfc_time(appointment.end_time)
+  = f.text_field :end_time, type: 'time', value: format_rfc_time(@appointment.end_time)
   %div Note: Start or end times after midnight but before 4:00 AM will be scheduled for the next day but will be shown on the day overview for this day
   %br
   = f.submit yield(:submit), class: 'btn btn-large btn-primary'

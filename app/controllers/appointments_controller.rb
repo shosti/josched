@@ -1,7 +1,4 @@
-class AppointmentsController < ApplicationController
-  before_filter :authorize
-  before_filter :correct_user
-
+class AppointmentsController < EventsController
   def new
     @appointment = Appointment.new
   end
@@ -14,10 +11,6 @@ class AppointmentsController < ApplicationController
     else
       render 'new'
     end
-  end
-
-  def show
-    @event = current_user.appointments.find(params[:id])
   end
 
   def edit
@@ -38,9 +31,4 @@ class AppointmentsController < ApplicationController
     redirect_to root_url
   end
 
-  private
-
-  def correct_user
-    redirect_to root_url if current_user.id != params[:user_id].to_i
-  end
 end
