@@ -36,4 +36,5 @@ Josched::Application.configure do
   config.active_support.deprecation = :stderr
 
   config.action_mailer.default_url_options = { :host => 'josched.dev' }
+  config.middleware.use Clearance::BackDoor
 end

@@ -1,0 +1,14 @@
+= div_for @event do
+  %table
+    %tr
+      %td
+        %strong
+          = link_to @event.name, [current_user, @event]
+    %tr
+      %td Location: #{@event.location}
+    %tr
+      %td Date: #{format_date @event.date}
+    %tr
+      %td Start: #{format_time @event.start_time}
+    %tr
+      %td End: #{format_time @event.end_time}
