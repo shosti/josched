@@ -6,20 +6,20 @@ describe User do
   describe "getting events for a day" do
     before do
       5.times do
-        create(:appointment, date: 3.weeks.ago, user_id: user.id)
+        create(:appointment, date: 3.weeks.ago, user: user)
       end
       3.times do
-        create(:appointment, date: 1.week.ago, user_id: user.id)
+        create(:appointment, date: 1.week.ago, user: user)
       end
       2.times do
         create(:appointment,
                date: Date.parse('03-12-2013'),
-               user_id: user.id)
+               user: user)
       end
       4.times do
         create(:appointment,
                date: Date.today,
-               user_id: user.id)
+               user: user)
       end
     end
 

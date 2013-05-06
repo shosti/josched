@@ -6,7 +6,7 @@ feature "Manage appointments" do
                       name: "Doctor",
                       start_time: "3:45 PM",
                       end_time: "5:45 PM",
-                      user_id: user.id) }
+                      user: user) }
 
   scenario "schedule new appointment" do
     visit new_user_appointment_path(user, as: user)
