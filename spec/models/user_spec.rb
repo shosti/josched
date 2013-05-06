@@ -26,8 +26,8 @@ describe User do
     specify do
       expect(user.day(3.weeks.ago).count).to eql(5)
       expect(user.day(1.week.ago).count).to eql(3)
-      expect(user.day('03-12-2013').count).to eql(2)
-      expect(user.day('today').count).to eql(4)
+      expect(user.day(Date.parse('03-12-2013')).count).to eql(2)
+      expect(user.day(Date.today).count).to eql(4)
     end
   end
 end

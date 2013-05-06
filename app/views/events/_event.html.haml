@@ -4,12 +4,8 @@
       %td
         %strong
           = link_to event.name, [current_user, event]
+    - if event.location && event.location != ""
+      %tr
+        %td Location: #{event.location}
     %tr
-      %td Location: #{event.location}
-    %tr
-      %td Date: #{format_date event.date}
-    %tr
-      %td Time: #{event.start_time}-#{event.end_time}
-    %tr
-      %td
-        = link_to 'Edit', yield(:edit_path)
+      %td #{event.start_time}-#{event.end_time}

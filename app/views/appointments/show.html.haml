@@ -1,2 +1,3 @@
-- provide(:edit_path, edit_user_appointment_path(current_user, @event))
+- provide(:edit, link_to('edit',                             |
+          edit_user_appointment_path(current_user, @event))) |
 = render partial: 'events/event', object: @event
