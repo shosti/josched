@@ -19,8 +19,7 @@ feature "Manage appointments" do
 
     expect(page).to have_text "Appointment scheduled"
     expect(page).to have_text "Dentist"
-    expect(page).to have_text "2:00 PM"
-    expect(page).to have_text "3:30 PM"
+    expect(page).to have_text "2:00 PM-3:30 PM"
   end
 
   scenario "edit appointment" do
@@ -37,8 +36,7 @@ feature "Manage appointments" do
     visit user_appointment_path(user, appt, as: user)
 
     expect(page).to have_text "Doctor"
-    expect(page).to have_text "3:45 PM"
-    expect(page).to have_text "5:45 PM"
+    expect(page).to have_text "3:45 PM-5:45 PM"
   end
 
   scenario "delete appointment" do

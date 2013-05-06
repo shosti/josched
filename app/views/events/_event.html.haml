@@ -9,9 +9,7 @@
     %tr
       %td Date: #{format_date event.date}
     %tr
-      %td Start: #{event.start_time}
-    %tr
-      %td End: #{event.end_time}
+      %td Time: #{event.start_time}-#{event.end_time}
     %tr
       %td
         = link_to 'Edit', yield(:edit_path)
