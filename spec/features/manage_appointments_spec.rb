@@ -19,6 +19,8 @@ feature "Manage appointments" do
 
     expect(page).to have_text "Appointment scheduled"
     expect(page).to have_text "Dentist"
+    expect(page).to have_text "2:00 PM"
+    expect(page).to have_text "3:30 PM"
   end
 
   scenario "edit appointment" do

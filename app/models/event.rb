@@ -17,22 +17,28 @@ class Event < ActiveRecord::Base
 
   def start_time
     @start_time ||
-      Event.min_to_time(self.date, self.start_min)
+      Event.min_to_time(self.start_min)
   end
 
   def end_time
     @end_time ||
-      Event.min_to_time(self.date, self.end_min)
+      Event.min_to_time(self.end_min)
   end
+
+  MINUTES_IN_DAY = 24 * 60
+  FOUR_AM = 4 * 60
 
   def self.time_to_min(time)
-    time = Time.parse(time) if time.is_a? String
-    time.hour * 60 + time.min
+    if time
+      time = Time.parse(time) if time.is_a? String
+      (time.hour * 60 + time.min - FOUR_AM) % MINUTES_IN_DAY
+    end
   end
 
-  def self.min_to_time(date, min)
-    if date && min
-      date.to_date + min.minutes
+  def self.min_to_time(min)
+    if min
+      day_mins = (min + FOUR_AM) % MINUTES_IN_DAY
+      (Date.today + day_mins.minutes).strftime('%l:%M %p').strip
     end
   end
 

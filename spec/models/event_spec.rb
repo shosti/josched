@@ -1,15 +1,17 @@
 require 'spec_helper'
 
 describe Event do
-  describe "convert between time and minutes" do
-    specify do
-      today = Time.now.to_date
+  it "can convert between time and minutes" do
+    four_am = 4 * 60
 
-      expect(Event.time_to_min(today + 10.minutes)).to eql(10)
-      expect(Event.time_to_min(today + 12.hours)).to eql(12 * 60)
-      expect(Event.time_to_min(today + 2.hours + 2.minutes)).to eql(122)
-      expect(Event.min_to_time(today, 22)).to eql(today + 22.minutes)
-      expect(Event.min_to_time(today, 4 * 60 + 5)).to eql(today + 4.hours + 5.minutes)
-    end
+    expect(Event.time_to_min('4:00 AM')).to eql(0)
+    expect(Event.time_to_min('8:00 PM')).to eql((12 + 8) * 60 - four_am)
+    expect(Event.time_to_min('12:00 PM')).to eql(12 * 60 - four_am)
+    expect(Event.time_to_min('2:02 AM')).to eql((24 + 2) * 60 + 2 -
+                                                four_am)
+    expect(Event.min_to_time(0)).to eql('4:00 AM')
+    expect(Event.min_to_time(22)).to eql('4:22 AM')
+    expect(Event.min_to_time(4 * 60 + 5)).to eql('8:05 AM')
+    expect(Event.min_to_time(13 * 60 + 30)).to eql('5:30 PM')
   end
 end
