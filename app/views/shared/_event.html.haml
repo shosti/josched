@@ -12,3 +12,6 @@
       %td Start: #{format_time @event.start_time}
     %tr
       %td End: #{format_time @event.end_time}
+    %tr
+      %td
+        = link_to 'Edit', yield(:edit_path)
