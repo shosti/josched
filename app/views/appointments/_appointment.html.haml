@@ -6,10 +6,8 @@
   = f.label :date
   = f.text_field :date, type: 'date'
   = f.label :start_time
-  = f.text_field :start_time, type: 'time',            |
-    value: appointment.start_time.strftime('%H:%M:%S') |
+  = f.text_field :start_time, type: 'time', value: format_rfc_time(appointment.start_time)
   = f.label :end_time
-  = f.text_field :end_time, type: 'time',              |
-    value: appointment.end_time.strftime('%H:%M:%S')   |
+  = f.text_field :end_time, type: 'time', value: format_rfc_time(appointment.end_time)
   %br
   = f.submit yield(:submit), class: 'btn btn-large btn-primary'
