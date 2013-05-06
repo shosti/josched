@@ -1,0 +1,8 @@
+* DONE I want to be able to sign in to see my tasks
+* TODO I want it to show me an overview of my day, including free time
+* I want to be able to enter a task, length of time it will take, and a time range, and it should schedule the task for me
+* I want to be able to enter repeating events (such as appointments or practicing)
+* I want to be able to enter the location of events and it should schedule in travel time.
+* I want it to alert me if my activity doesn't fit into the time range
+* I want it to display a schedule that shows the range of activities I can do when.
+* I want it to include tasks from Google Calendar
