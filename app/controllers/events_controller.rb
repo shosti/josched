@@ -2,10 +2,6 @@ class EventsController < ApplicationController
   before_filter :authorize
   before_filter :correct_user, except: :index
 
-  def show
-    @event = current_user.events.find(params[:id])
-  end
-
   def index
     @date = params[:date]
 

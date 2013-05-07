@@ -17,6 +17,10 @@ class AppointmentsController < EventsController
     @appointment = current_user.appointments.find(params[:id])
   end
 
+  def show
+    @appointment = current_user.appointments.find(params[:id])
+  end
+
   def update
     @appointment = current_user.appointments.find(params[:id])
     if @appointment.update_attributes(params[:appointment])
