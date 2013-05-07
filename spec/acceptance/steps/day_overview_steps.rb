@@ -36,3 +36,10 @@ step "I should see all of my tasks" do
     page.should have_text "#{appt.start_time}-#{appt.end_time}"
   end
 end
+
+step "I should see the following free times:" do |times_table|
+  times_table.hashes.each do |time_h|
+    t = time_h['Time']
+    page.should have_text "Free #{t}"
+  end
+end

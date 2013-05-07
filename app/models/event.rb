@@ -47,7 +47,7 @@ class Event < ActiveRecord::Base
 
   def normalize_date
     unless self.date.blank?
-      unless self.date.is_a? Date
+      unless self.date.instance_of? Date
         self.date = self.date.to_date
       end
     end

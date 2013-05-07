@@ -15,7 +15,7 @@ Feature: Day overview
     When I go to today's overview page
     Then I should see all of my tasks
     And I should see the following free times:
-    | time              |
+    | Time              |
     | 5:00 PM-6:30 PM   |
     | 7:00 PM-9:00 PM   |
     | 10:00 PM-12:00 AM |

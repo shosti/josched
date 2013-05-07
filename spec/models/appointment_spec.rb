@@ -14,6 +14,7 @@ describe Appointment do
   it { should be_valid }
   its(:start_min) { should eql(Event.time_to_min("11:15 AM")) }
   its(:end_min) { should eql(Event.time_to_min("2:00 PM")) }
+  it { should be_saveable }
 
   describe "when name is not present" do
     before { appt.name = ""}

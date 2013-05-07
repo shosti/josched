@@ -3,8 +3,11 @@
     %tr
       %td
         %strong
-          = link_to event.name, [current_user, event]
-    - if event.location && event.location != ""
+          - if event.saveable?
+            = link_to event.name, [current_user, event]
+          - else
+            = event.name
+    - unless event.location.blank?
       %tr
         %td Location: #{event.location}
     %tr

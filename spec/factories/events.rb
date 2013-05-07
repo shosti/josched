@@ -22,4 +22,12 @@ FactoryGirl.define do
     date
     user
   end
+
+  factory :pseudo_event do
+    name
+    start_time '3:00 PM'
+    end_time '5:00 PM'
+    date
+    user
+  end
 end
