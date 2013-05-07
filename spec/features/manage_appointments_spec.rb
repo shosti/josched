@@ -64,12 +64,12 @@ feature "Manage appointments" do
 
     scenario "new appointment" do
       visit new_user_appointment_path(user, as: other_user)
-      expect(current_path).to eql(root_path)
+      expect(current_path).to eql(day_path('today'))
     end
 
     scenario "edit appointment" do
       visit edit_user_appointment_path(user, appt, as: other_user)
-      expect(current_path).to eql(root_path)
+      expect(current_path).to eql(day_path('today'))
     end
   end
 end

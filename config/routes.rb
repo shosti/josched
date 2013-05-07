@@ -6,4 +6,5 @@ Josched::Application.routes.draw do
   end
 
   get 'day/:date' => 'events#index', as: 'day'
+  get 'day' => 'events#index', defaults: { date: 'today' }
 end

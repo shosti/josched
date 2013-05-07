@@ -28,7 +28,6 @@ class AppointmentsController < EventsController
   def destroy
     current_user.appointments.find(params[:id]).destroy
     flash[:success] = "Appointment deleted"
-    redirect_to root_url
+    redirect_to day_path('today')
   end
-
 end
