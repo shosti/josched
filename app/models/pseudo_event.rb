@@ -5,6 +5,14 @@ class PseudoEvent < Event
     false
   end
 
+  def save!
+    false
+  end
+
+  def save
+    false
+  end
+
   def self.free_time(start_min, end_min)
     e = PseudoEvent.new(name: 'Free',
                         start_min: start_min,

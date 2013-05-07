@@ -4,7 +4,15 @@ describe PseudoEvent do
   let(:event) { build(:pseudo_event) }
 
   subject { event }
+
   it { should_not be_saveable }
+  it "should not be saveable" do
+    event.save
+    event.save!
+    PseudoEvent.create
+
+    PseudoEvent.select{ true }.count.should eql 0
+  end
 
   it "can be a free time" do
     free_time = PseudoEvent.free_time(Event.time_to_min('8:00 AM'),
