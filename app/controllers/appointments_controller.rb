@@ -7,7 +7,7 @@ class AppointmentsController < EventsController
     @appointment = current_user.appointments.build(params[:appointment])
     if @appointment.save
       flash[:success] = "Appointment scheduled"
-      redirect_to [current_user, @appointment]
+      redirect_to day_path(@appointment.date)
     else
       render 'new'
     end

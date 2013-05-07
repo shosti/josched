@@ -8,18 +8,29 @@ feature "Manage appointments" do
                       end_time: "5:45 PM",
                       user: user) }
 
-  scenario "schedule new appointment" do
-    visit new_user_appointment_path(user, as: user)
-    fill_in 'Name', with: "Dentist"
-    fill_in 'Location', with: "1482 9th Ave, SF"
-    fill_in 'Date', with: "05/05/2013"
-    fill_in 'Start time', with: "2:00 PM"
-    fill_in 'End time', with: "3:30 PM"
-    click_button 'Schedule'
+  describe "schedule new appointment" do
+    before { visit new_user_appointment_path(user, as: user) }
 
-    expect(page).to have_text "Appointment scheduled"
-    expect(page).to have_text "Dentist"
-    expect(page).to have_text "2:00 PM-3:30 PM"
+    scenario "with valid information" do
+      fill_in 'Name', with: "Dentist"
+      fill_in 'Location', with: "1482 9th Ave, SF"
+      fill_in 'Date', with: "05/05/2013"
+      fill_in 'Start time', with: "2:00 PM"
+      fill_in 'End time', with: "3:30 PM"
+      click_button 'Schedule'
+
+      expect(page).to have_text "Appointment scheduled"
+      expect(page).to have_text "Dentist"
+      expect(page).to have_text "2:00 PM-3:30 PM"
+      expect(page).to have_text "05/05/2013"
+    end
+
+    scenario "with invalid information" do
+      fill_in 'Name', with: "Dentist"
+      click_button 'Schedule'
+
+      expect(page).to have_text "Date can't be blank"
+    end
   end
 
   scenario "edit appointment" do

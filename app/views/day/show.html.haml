@@ -1,0 +1,11 @@
+.row
+  %h1
+    = format_date @date
+.row
+  = render partial: 'events/event', collection: @events
+%br
+%br
+.row
+  = link_to 'Schedule an appointment',     |
+  new_user_appointment_path(current_user), |
+  class: 'btn btn-small'                   |

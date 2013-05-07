@@ -30,14 +30,14 @@ class Event < ActiveRecord::Base
   FOUR_AM = 4 * 60
 
   def self.time_to_min(time)
-    if time
+    unless time.blank?
       time = Time.parse(time) if time.is_a? String
       (time.hour * 60 + time.min - FOUR_AM) % MINUTES_IN_DAY
     end
   end
 
   def self.min_to_time(min)
-    if min
+    unless min.blank?
       day_mins = (min + FOUR_AM) % MINUTES_IN_DAY
       (Date.today + day_mins.minutes).strftime('%l:%M %p').strip
     end
@@ -46,17 +46,19 @@ class Event < ActiveRecord::Base
   private
 
   def normalize_date
-    unless self.date.is_a? Date
-      self.date = self.date.to_date
+    unless self.date.blank?
+      unless self.date.is_a? Date
+        self.date = self.date.to_date
+      end
     end
   end
 
   def set_time_mins
-    if start_time && start_time != ""
+    unless self.start_time.blank?
       self.start_min = Event.time_to_min self.start_time
     end
 
-    if end_time && end_time != ""
+    unless self.start_time.blank?
       self.end_min = Event.time_to_min self.end_time
     end
   end

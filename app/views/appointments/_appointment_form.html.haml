@@ -1,4 +1,5 @@
 = form_for [current_user, @appointment] do |f|
+  = render partial: 'shared/error_messages', locals: { subject: @appointment }
   = f.label :name
   = f.text_field :name
   = f.label :location

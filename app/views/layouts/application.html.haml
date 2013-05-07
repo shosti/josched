@@ -20,9 +20,11 @@
         %h3.muted
           = link_to 'JoSched', root_path
       %hr
-      - flash.each do |key, value|
-        %div{class: "flash #{key}"}
-          = value
+      - flash.each do |name, msg|
+        - if msg.is_a?(String)
+          %div{:class => "alert alert-#{name == :error ? "error" : "success"}"}
+            %a.close{"data-dismiss" => "alert"} ×
+            = content_tag :div, msg, :id => "flash_#{name}"
 
       = yield
       %footer

@@ -13,6 +13,6 @@ describe "Day page requests" do
   it "should return 404 for non-existent dates" do
     -> do
       get day_path('notthere', as: user)
-    end.should raise_error(ActionController::RoutingError)
+    end.should raise_error(ActiveRecord::RecordNotFound)
   end
 end

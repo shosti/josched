@@ -5,6 +5,5 @@ Josched::Application.routes.draw do
     resources :appointments
   end
 
-  get 'day/:date' => 'events#index', as: 'day'
-  get 'day' => 'events#index', defaults: { date: 'today' }
+  resources :day, only: :show
 end

@@ -1,0 +1,8 @@
+- if subject.errors.any?
+  .error_explanation
+    .alert.alert-error
+      This form contains #{pluralize(subject.errors.count, "error")}:
+      %ul
+        - subject.errors.full_messages.each do |msg|
+          %li
+            = msg
