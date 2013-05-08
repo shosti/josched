@@ -9,6 +9,7 @@ describe Day do
     expect(Day.parse_date('')).to eql Date.today
     expect(Day.parse_date(3.weeks.ago)).to eql 3.weeks.ago.to_date
     expect(Day.parse_date('1988-03-30')).to eql Date.parse('30 March 1988')
+    expect(Day.parse_date(Date.today)).to eql Date.today
   end
 
   describe "getting events for a day" do

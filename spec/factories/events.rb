@@ -30,4 +30,13 @@ FactoryGirl.define do
     date
     user
   end
+
+  factory :task do
+    name
+    earliest '10:00 AM'
+    latest '11:00 AM'
+    length 4
+    date
+    user
+  end
 end

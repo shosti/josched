@@ -39,9 +39,8 @@ class Day
       end
     end
 
-    Day.add_free_times(user.
-                       events.
-                       find_all_by_date(date,
-                                        order: 'start_min ASC').to_a)
+    appts = user.appointments.find_all_by_date(date,
+                                               order: 'start_min ASC')
+    Day.add_free_times(appts)
   end
 end
