@@ -19,6 +19,7 @@ group :development, :test do
   gem 'sqlite3', '1.3.7'
   gem 'turnip', '1.1.0'
   gem 'debugger', git: "git://github.com/cldwalker/debugger"
+  gem 'simplecov', '0.8.0.pre', require: false
 end
 
 group :production do
