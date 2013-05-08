@@ -7,6 +7,8 @@ step "my day looks like this:" do |appts_table|
     time_str = appt['Time']
     time_re = /[0-9:]+ [AP]M/
 
+    name = appt['Task']
+
     if time_str.match(/Until/)
       start_time = '4:00 AM'
       end_time = time_str.match(time_re)[0]
@@ -17,12 +19,16 @@ step "my day looks like this:" do |appts_table|
       start_time, end_time = time_str.split(/-/)
     end
 
-    create(:appointment,
-           user: @user,
-           name: appt['Task'],
-           start_time: start_time,
-           end_time: end_time,
-           date: Date.today)
+    visit new_user_appointment_path(@user, as: @user)
+    fill_in 'Name', with: name
+    fill_in 'Date', with: Date.today.to_s
+    fill_in 'Start time', with: start_time
+    fill_in 'End time', with: end_time
+    click_button 'Schedule'
+
+    { name: name,
+      start_time: start_time,
+      end_time: end_time }
   end
 end
 
@@ -30,10 +36,10 @@ step "I go to today's overview page" do
   visit day_path('today', as: @user)
 end
 
-step "I should see all of my tasks" do
+step "I should see all of my appointments" do
   @appts.each do |appt|
-    page.should have_text appt.name
-    page.should have_text "#{appt.start_time}-#{appt.end_time}"
+    page.should have_text appt[:name]
+    page.should have_text "#{appt[:start_time]}-#{appt[:end_time]}"
   end
 end
 

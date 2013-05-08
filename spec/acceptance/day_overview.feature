@@ -13,7 +13,7 @@ Feature: Day overview
 
   Scenario: An overview of my day
     When I go to today's overview page
-    Then I should see all of my tasks
+    Then I should see all of my appointments
     And I should see the following free times:
     | Time              |
     | 5:00 PM-6:30 PM   |
