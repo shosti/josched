@@ -26,6 +26,8 @@ class Event < ActiveRecord::Base
   end
 
   MINUTES_IN_DAY = 24 * 60
+  MINUTES_IN_QUART = 15
+  QUARTS_IN_HOUR = 4
   FOUR_AM = 4 * 60
 
   def self.time_to_min(time)

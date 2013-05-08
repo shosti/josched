@@ -30,6 +30,18 @@ class Day
     end
   end
 
+  def self.appts_to_schedlogic(appts)
+    appts = appts.map(&:to_schedlogic)
+    appts[1..-1].inject([appts[0]]) do |appts_so_far, this_appt|
+      last_appt = appts_so_far.pop
+      if last_appt[:end] >= this_appt[:start]
+        appts_so_far << { start: last_appt[:start], end: this_appt[:end] }
+      else
+        appts_so_far << last_appt << this_appt
+      end
+    end
+  end
+
   def self.find(date, user)
     unless date.instance_of? Date
       begin

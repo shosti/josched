@@ -17,9 +17,9 @@ describe Task do
     expect(Task.find(t2.id).earliest).to eql '12:15 PM'
     expect(Task.find(t2.id).latest).to eql '1:45 PM'
 
-    t3 = create(:task, earliest: '4:00 AM', latest: '3:59 AM')
+    t3 = create(:task, earliest: '4:00 AM', latest: '4:00 AM')
     expect(t3.earliest_quart).to eql 0
-    expect(t3.latest_quart).to eql 24 * 4 - 1
+    expect(t3.latest_quart).to eql 24 * 4
   end
 
   it "validates for invalid times" do

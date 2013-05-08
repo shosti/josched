@@ -1,7 +1,4 @@
 class Task < Event
-  MINS_IN_QUART = 15
-  QUARTS_IN_HOUR = 4
-
   # belongs_to :user
   attr_writer :earliest, :latest, :length, :time_units
   attr_accessible(:earliest,
@@ -25,12 +22,12 @@ class Task < Event
 
   def earliest
     @earliest ||
-      (Event.min_to_time(earliest_quart * MINS_IN_QUART) if earliest_quart)
+      (Event.min_to_time(earliest_quart * MINUTES_IN_QUART) if earliest_quart)
   end
 
   def latest
     @latest ||
-      (Event.min_to_time(latest_quart * MINS_IN_QUART) if latest_quart)
+      (Event.min_to_time(latest_quart * MINUTES_IN_QUART) if latest_quart)
   end
 
   def length
@@ -40,7 +37,7 @@ class Task < Event
       if time_units == 'hours'
         length_quart.to_d / QUARTS_IN_HOUR
       else
-        length_quart * MINS_IN_QUART
+        length_quart * MINUTES_IN_QUART
       end
     end
   end
@@ -68,7 +65,7 @@ class Task < Event
       errors.add(:earliest, "is an invalid time")
     end
 
-    if self.latest_quart >= 24 * QUARTS_IN_HOUR
+    if self.latest_quart > 24 * QUARTS_IN_HOUR
       errors.add(:latest, "is an invalid time")
     end
   end
@@ -79,19 +76,21 @@ class Task < Event
         self.length_quart =
           (@length.to_d * QUARTS_IN_HOUR).ceil
       else
-        self.length_quart = (@length.to_f / MINS_IN_QUART).ceil
+        self.length_quart = (@length.to_f / MINUTES_IN_QUART).ceil
       end
     end
 
     unless @earliest.blank?
       minutes = Event.time_to_min(@earliest)
-      self.earliest_quart = minutes / MINS_IN_QUART +
-        (minutes % MINS_IN_QUART == 0 ? 0 : 1)
+      self.earliest_quart = minutes / MINUTES_IN_QUART +
+        (minutes % MINUTES_IN_QUART == 0 ? 0 : 1)
     end
 
     unless @latest.blank?
       minutes = Event.time_to_min(@latest)
-      self.latest_quart = minutes / MINS_IN_QUART
+      quarts = minutes / MINUTES_IN_QUART
+      # 4:00 AM as a latest time = 96 quarters
+      self.latest_quart = (quarts == 0 ? 24 * QUARTS_IN_HOUR : quarts)
     end
   end
 end

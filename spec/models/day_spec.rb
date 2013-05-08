@@ -66,15 +66,7 @@ describe Day do
        ['4:00 PM', '7:00 PM']]
     end
 
-    before do
-      appts.each do |start_time, end_time|
-        create(:appointment,
-               date: date,
-               user: user,
-               start_time: start_time,
-               end_time: end_time)
-      end
-    end
+    before { schedule_appts appts }
 
     it "schedules in free time for times greater than 1 hour" do
       day = Day.find(date, user)
@@ -86,5 +78,34 @@ describe Day do
       day[5].start_time.should eql free_times[1][0]
       day[5].end_time.should eql free_times[1][1]
     end
+  end
+
+  describe "merging and processing appointments for the SchedLogic API" do
+    let(:date) { 3.days.ago.to_date }
+    let(:appts) do
+      [['9:35 AM', '10:46 AM'],
+       ['11:01 AM', '11:30 AM'],
+       ['3:15 PM', '3:35 PM']]
+    end
+
+    before { schedule_appts appts }
+
+    specify do
+      expect(Day.appts_to_schedlogic(Appointment.find_all_by_date(date))).
+        to eql([{ start: 5 * 4 + 2,
+                  end: 7 * 4 + 2 },
+                { start: 11 * 4 + 1,
+                  end: 11 * 4 + 3}])
+    end
+  end
+end
+
+def schedule_appts(appts)
+  appts.each do |start_time, end_time|
+    create(:appointment,
+           date: date,
+           user: user,
+           start_time: start_time,
+           end_time: end_time)
   end
 end

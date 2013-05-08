@@ -48,4 +48,24 @@ describe Appointment do
     end
     its(:start_min) { should eql(Event.time_to_min("1:00 AM")) }
   end
+
+  it "can be represented as a hash for the SchedLogic API" do
+    appt1 = create(:appointment,
+                   start_time: '8:35 AM',
+                   end_time: '10:06 AM')
+    expect(appt1.to_schedlogic).to eql({ start: (4 * 4 + 2),
+                                         end: (6 * 4 + 1) })
+
+    appt2 = create(:appointment,
+                   start_time: '4:00 AM',
+                   end_time: '8:00 AM')
+    expect(appt2.to_schedlogic).to eql({ start: 0,
+                                         end: 4 * 4 })
+
+    appt3 = create(:appointment,
+                   start_time: '2:00 AM',
+                   end_time: '4:00 AM')
+    expect(appt3.to_schedlogic).to eql({ start: 22 * 4,
+                                         end: 24 * 4 })
+  end
 end
