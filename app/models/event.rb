@@ -57,10 +57,12 @@ class Event < ActiveRecord::Base
   def set_time_mins
     unless @start_time.blank?
       self.start_min = Event.time_to_min @start_time
+      @start_time = nil
     end
 
-    unless @start_time.blank?
+    unless @end_time.blank?
       self.end_min = Event.time_to_min @end_time
+      @end_time = nil
     end
   end
 end

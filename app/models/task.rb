@@ -10,12 +10,12 @@ class Task < Event
                   :time_units)
 
   before_validation :normalize_time_units
+  before_validation :unschedule_if_necessary
 
   validates :earliest_quart, presence: true
   validates :latest_quart, presence: true
   validates :length_quart, presence: true
   validate :earliest_and_latest_must_be_valid_times
-  validate :schedule_must_be_in_window
 
   def saveable?
     true
@@ -77,23 +77,25 @@ class Task < Event
 
   private
 
-  def schedule_must_be_in_window
+  def unschedule_if_necessary
     if self.start_min && self.end_min
       start_quart = self.start_min / MINUTES_IN_QUART
       end_quart = self.end_min / MINUTES_IN_QUART
 
-      if start_quart < earliest_quart
-        errors.add(:start_time, "must be after the earliest time")
-      end
+      unschedule_necessary =
+        (start_quart < earliest_quart) ||
+        (end_quart > latest_quart) ||
+        (end_quart - start_quart != length_quart)
 
-      if end_quart > latest_quart
-        errors.add(:end_time, "must be before the latest time")
-      end
-
-      if end_quart - start_quart > self.length_quart
-        errors.add(:length, "must be equal to scheduled length")
-      end
+      unschedule if unschedule_necessary
     end
+  end
+
+  def unschedule
+    self.start_min = nil
+    self.end_min = nil
+    @start_time = nil
+    @end_time = nil
   end
 
   def earliest_and_latest_must_be_valid_times
@@ -118,12 +120,14 @@ class Task < Event
       else
         self.length_quart = (@length.to_f / MINUTES_IN_QUART).ceil
       end
+      @length = nil
     end
 
     unless @earliest.blank?
       minutes = Event.time_to_min(@earliest)
       self.earliest_quart = minutes / MINUTES_IN_QUART +
         (minutes % MINUTES_IN_QUART == 0 ? 0 : 1)
+      @earliest = nil
     end
 
     unless @latest.blank?
@@ -131,6 +135,7 @@ class Task < Event
       quarts = minutes / MINUTES_IN_QUART
       # 4:00 AM as a latest time = 96 quarters
       self.latest_quart = (quarts == 0 ? 24 * QUARTS_IN_HOUR : quarts)
+      @latest = nil
     end
   end
 end

@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 describe Task do
-  let(:task) { create(:task) }
+  describe "basic properties" do
+    let(:task) { create(:task) }
 
-  subject { task }
-  it { should be_saveable }
+    subject { task }
+    it { should be_saveable }
+  end
 
   it "stores times as quarter-hours since 4 AM, rounded inward" do
     t1 = create(:task, earliest: '4:00 AM', latest: '8:00 AM')
@@ -66,7 +68,7 @@ describe Task do
   end
 
   describe "interacting with SchedLogic" do
-    let(:new_task) do
+    let(:task) do
       create(:task,
              length: 1.5,
              time_units: 'hours',
@@ -75,37 +77,55 @@ describe Task do
     end
 
     it "can be represented as a hash for the SchedLogic API" do
-      expect(new_task.to_schedlogic).to eql({ earliest: 4 * 4,
-                                       latest: 4 * 8,
-                                       length: 6,
-                                       id: new_task.id })
+      expect(task.to_schedlogic).to eql({ earliest: 4 * 4,
+                                          latest: 4 * 8,
+                                          length: 6,
+                                          id: task.id })
     end
 
     it "can be concretely scheduled" do
-      new_task.schedule(4 * 4, 4 * 4 + 6)
-      new_task.should be_valid
-      expect(new_task.start_time).to eql '8:00 AM'
-      expect(new_task.end_time).to eql '9:30 AM'
-    end
-
-    it "is invalid if not scheduled in the proper time window" do
-      new_task.schedule(0, 6)
-      new_task.should_not be_valid
-    end
-
-    it "is invalid if not scheduled with proper length" do
-      new_task.schedule(4 * 4, 4 * 4 + 8)
-      new_task.should_not be_valid
+      task.schedule(4 * 4, 4 * 4 + 6)
+      task.should be_valid
+      expect(task.start_time).to eql '8:00 AM'
+      expect(task.end_time).to eql '9:30 AM'
     end
 
     it "can be scheduled from SchedLogic data" do
-      Task.schedule_task({ 'id' => new_task.id,
+      Task.schedule_task({ 'id' => task.id,
                            'start' => 4 * 4,
                            'end' => 4 * 4 + 6 })
-      t = Task.find(new_task.id)
+      t = Task.find(task.id)
       t.should be_valid
       expect(t.start_time).to eql '8:00 AM'
       expect(t.end_time).to eql '9:30 AM'
+    end
+
+    describe "when editing" do
+      before { task.schedule(4 * 4, 4 * 4 + 6) }
+
+      it "doesn't stay scheduled if length changes" do
+        task.length_quart = 8
+        task.save!
+
+        expect(task.start_min).to be_nil
+        expect(task.end_min).to be_nil
+      end
+
+      it "doesn't stay scheduled if earliest is no longer valid" do
+        task.earliest_quart = 17
+        task.save!
+
+        expect(task.start_min).to be_nil
+        expect(task.end_min).to be_nil
+      end
+
+      it "doesn't stay scheduled if latest is no longer valid" do
+        task.latest_quart = 20
+        task.save!
+
+        expect(task.start_min).to be_nil
+        expect(task.end_min).to be_nil
+      end
     end
   end
 end
