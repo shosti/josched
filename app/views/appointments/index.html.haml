@@ -1,0 +1,8 @@
+.row
+  %h1 Appointments #{"for #{format_date @date}" unless @date.blank?}
+.row
+  = render partial: 'appointment', collection: @events
+%br
+%br
+.row
+  = link_to 'Day overview', day_path(@date.blank? ? 'today' : @date)

@@ -1,16 +1,1 @@
-.row
-  %table
-    %tr
-      %td
-        %strong
-          = @event.name
-    - unless @event.location.blank?
-      %tr
-        %td Location: #{@event.location}
-    %tr
-      %td Date: #{link_to format_date(@event.date), day_path(@event.date)}
-    %tr
-      %td Time: #{@event.start_time}-#{@event.end_time}
-    %tr
-      %td
-        = link_to 'edit', edit_user_appointment_path(current_user, @event)
+= render partial: 'appointment', object: @event

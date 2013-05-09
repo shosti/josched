@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 feature "Manage appointments" do
+  include ApplicationHelper
+
   let(:user) { create(:user) }
   let(:appt) { create(:appointment,
                       name: "Doctor",
@@ -48,6 +50,29 @@ feature "Manage appointments" do
 
     expect(page).to have_text "Doctor"
     expect(page).to have_text "3:45 PM-5:45 PM"
+  end
+
+  describe "list appointments" do
+    let(:user) { create(:user) }
+
+    let!(:appt1) { create(:appointment, user: user, date: Date.today) }
+    let!(:appt2) { create(:appointment, user: user, date: Date.today) }
+    let!(:appt3) { create(:appointment, user: user, date: 1.day.ago.to_date) }
+
+    scenario "listing all appointments" do
+      visit user_appointments_path(user, as: user)
+      page.should have_text appt1.name
+      page.should have_text appt2.name
+      page.should have_text appt3.name
+    end
+
+    scenario "listing appointments for a specific day" do
+      visit user_appointments_path(user, date: 'today', as: user)
+      page.should have_text format_date(Date.today)
+      page.should have_text appt1.name
+      page.should have_text appt2.name
+      page.should_not have_text appt3.name
+    end
   end
 
   scenario "delete appointment" do
