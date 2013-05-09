@@ -1,5 +1,6 @@
 module EventSteps
   step "I schedule the following tasks:" do |tasks_table|
+    stub_impossible
 
     @tasks = tasks_table.hashes.map do |task|
       name = task['Task']
@@ -48,8 +49,7 @@ module EventSteps
 
   step "I schedule a set of tasks that is impossible" do
     create(:task, user: @user, date: Date.today)
-    stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
-      to_return(body: ActiveSupport::JSON.encode('none'))
+    stub_impossible
   end
 
   step "I schedule a set of tasks that is too hard for SchedLogic" do
@@ -60,5 +60,10 @@ module EventSteps
 
   step "I should see a(n) :error_msg error page" do |error_msg|
     page.should have_text error_msg
+  end
+
+  def stub_impossible
+    stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
+      to_return(body: ActiveSupport::JSON.encode('none'))
   end
 end
