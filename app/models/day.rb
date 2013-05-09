@@ -1,4 +1,5 @@
 require 'net/http'
+require 'exceptions'
 
 class Day
   SCHEDLOGIC_URL = 'https://schedlogic.herokuapp.com/schedule'
@@ -63,14 +64,14 @@ class Day
     if response.is_a?(Net::HTTPSuccess)
       data = ActiveSupport::JSON.decode(response.body)
       if data == 'none'
-        raise ScheduleImpossibleException
+        raise JoSched::ScheduleImpossibleException
       elsif data == 'failure'
-        raise ScheduleFailureException
+        raise JoSched::ScheduleFailureException
       else
         data[n]['tasks']
       end
     else
-      raise ScheduleFailureException
+      raise JoSched::ScheduleFailureException
     end
   end
 

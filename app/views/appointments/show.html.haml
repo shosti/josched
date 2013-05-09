@@ -8,8 +8,7 @@
       %tr
         %td Location: #{@event.location}
     %tr
-      %td Date:
-      = link_to format_date(@event.date), day_path(@event.date)
+      %td Date: #{link_to format_date(@event.date), day_path(@event.date)}
     %tr
       %td Time: #{@event.start_time}-#{@event.end_time}
     %tr

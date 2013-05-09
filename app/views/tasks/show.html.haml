@@ -3,12 +3,11 @@
     %tr
       %strong
         = @event.name
-    - if @event.location.blank?
+    - unless @event.location.blank?
       %tr
         %td Location: #{@event.location}
     %tr
-      %td Date:
-      = link_to format_date(@event.date), day_path(@event.date)
+      %td Date: #{link_to format_date(@event.date), day_path(@event.date)}
     %tr
       %td Timeframe: #{@event.earliest}-#{@event.latest}
     %tr

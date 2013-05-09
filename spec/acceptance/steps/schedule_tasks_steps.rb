@@ -45,4 +45,20 @@ module EventSteps
       length.should eql task[:length]
     end
   end
+
+  step "I schedule a set of tasks that is impossible" do
+    create(:task, user: @user, date: Date.today)
+    stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
+      to_return(body: ActiveSupport::JSON.encode('none'))
+  end
+
+  step "I schedule a set of tasks that is too hard for SchedLogic" do
+    create(:task, user: @user, date: Date.today)
+    stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
+      to_return(body: ActiveSupport::JSON.encode('failure'))
+  end
+
+  step "I should see a(n) :error_msg error page" do |error_msg|
+    page.should have_text error_msg
+  end
 end

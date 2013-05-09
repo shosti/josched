@@ -6,6 +6,6 @@
 %br
 %br
 .row
-  = link_to 'Schedule an appointment',     |
-  new_user_appointment_path(current_user), |
-  class: 'btn btn-small'                   |
+  = link_to('Schedule an appointment', new_user_appointment_path(current_user), class: 'btn btn-small')
+
+  = link_to('Schedule a task', new_user_task_path(current_user), class: 'btn btn-small')

@@ -20,3 +20,13 @@ Feature: Automatically scheduling tasks
     And I go to today's overview page
     Then I should see all of my appointments
     And I should see all of my tasks scheduled correctly
+
+  Scenario: Scheduling impossible tasks
+    When I schedule a set of tasks that is impossible
+    And I go to today's overview page
+    Then I should see an "Impossible Day" error page
+
+  Scenario: Scheduling tasks that are too hard for SchedLogic to compute
+    When I schedule a set of tasks that is too hard for SchedLogic
+    And I go to today's overview page
+    Then I should see a "Schedule Failure" error page
