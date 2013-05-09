@@ -8,10 +8,11 @@ class Day
   def self.parse_date(date)
     if date.instance_of? Date
       date
-    elsif date == 'today' || date.blank?
+    elsif date.blank?
       Date.today
     elsif date.is_a? String
-      Date.parse(date)
+      date = Chronic.parse(date)
+      date.to_date if date
     else
       date.to_date
     end
@@ -89,11 +90,8 @@ class Day
 
   def self.find(date, user)
     unless date.instance_of? Date
-      begin
-        date = Day.parse_date(date)
-      rescue
-        raise ActiveRecord::RecordNotFound
-      end
+      date = Day.parse_date(date)
+      raise ActiveRecord::RecordNotFound unless date
     end
 
     appts = user.appointments.find_all_by_date(date,

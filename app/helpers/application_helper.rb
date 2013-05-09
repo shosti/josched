@@ -7,7 +7,7 @@ module ApplicationHelper
 
   def format_rfc_time(time)
     unless time.blank?
-      time = Time.parse(time) if time.is_a? String
+      time = Chronic.parse(time) if time.is_a? String
       time.strftime('%H:%M:%S')
     end
   end

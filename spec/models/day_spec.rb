@@ -21,7 +21,7 @@ describe Day do
         create(:appointment, date: 1.week.ago, user: user)
       end
       2.times do
-        create(:appointment, date: Date.parse('03-12-2013'), user: user)
+        create(:appointment, date: Date.parse('2013-03-12'), user: user)
       end
       4.times do
         create(:appointment, date: Date.today, user: user)
@@ -33,11 +33,11 @@ describe Day do
                e.type == 'Appointment'
              end.count).to eql 5
 
-      expect(Day.find(1.week.ago, user).select do |e|
+      expect(Day.find('1 week ago', user).select do |e|
                e.type == 'Appointment'
              end.count).to eql 3
 
-      expect(Day.find('03-12-2013', user).select do |e|
+      expect(Day.find('2013-03-12', user).select do |e|
                e.type == 'Appointment'
              end.count).to eql 2
 
