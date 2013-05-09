@@ -20,6 +20,7 @@ group :development, :test do
   gem 'turnip', '1.1.0'
   gem 'debugger', git: "git://github.com/cldwalker/debugger"
   gem 'simplecov', '0.8.0.pre', require: false
+  gem 'webmock', '1.11.0'
 end
 
 group :production do
