@@ -12,9 +12,9 @@ class Task < Event
   before_validation :normalize_time_units
   before_validation :unschedule_if_necessary
 
-  validates :earliest_quart, presence: true
-  validates :latest_quart, presence: true
-  validates :length_quart, presence: true
+  validates :earliest, presence: true
+  validates :latest, presence: true
+  validates :length, presence: true
   validate :earliest_and_latest_must_be_valid_times
 
   def saveable?
@@ -99,16 +99,18 @@ class Task < Event
   end
 
   def earliest_and_latest_must_be_valid_times
-    if self.earliest_quart >= self.latest_quart
-      errors.add(:latest, "must be after earliest")
-    end
+    if self.earliest_quart && self.latest_quart
+      if self.earliest_quart >= self.latest_quart
+        errors.add(:latest, "must be after earliest")
+      end
 
-    if self.earliest_quart >= 24 * QUARTS_IN_HOUR
-      errors.add(:earliest, "is an invalid time")
-    end
+      if self.earliest_quart >= 24 * QUARTS_IN_HOUR
+        errors.add(:earliest, "is an invalid time")
+      end
 
-    if self.latest_quart > 24 * QUARTS_IN_HOUR
-      errors.add(:latest, "is an invalid time")
+      if self.latest_quart > 24 * QUARTS_IN_HOUR
+        errors.add(:latest, "is an invalid time")
+      end
     end
   end
 

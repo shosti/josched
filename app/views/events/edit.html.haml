@@ -1,0 +1,6 @@
+- provide(:submit, 'Save changes')
+.row
+  %h1 Edit #{an_event @event}
+.row
+  = render 'event_form'
+  = delete_event_button @event

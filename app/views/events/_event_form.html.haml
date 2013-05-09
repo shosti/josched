@@ -1,0 +1,34 @@
+= form_for [current_user, @event] do |f|
+  = render partial: 'shared/error_messages', locals: { subject: @event }
+  = f.label :name
+  = f.text_field :name
+  = f.label :location
+  = f.text_field :location
+  = f.label :date
+  = f.text_field :date, type: 'date'
+  - if appointment? @event
+    = f.label :start_time
+    = f.text_field :start_time,               |
+    type: 'time',                             |
+    value: format_rfc_time(@event.start_time) |
+    = f.label :end_time
+    = f.text_field :end_time,                 |
+    type: 'time',                             |
+    value: format_rfc_time(@event.end_time)   |
+  - if task? @event
+    = f.label :earliest
+    = f.text_field :earliest,                 |
+    type: 'time',                             |
+    value: format_rfc_time(@event.earliest)   |
+    = f.label :latest
+    = f.text_field :latest,                   |
+    type: 'time',                             |
+    value: format_rfc_time(@event.latest)     |
+    = f.label :length
+    = f.text_field :length, type: 'number'
+    = f.select :time_units, ['minutes', 'hours'], value: 'minutes'
+  %div Note: Times scheduled after midnight but before 4:00 AM
+  will be scheduled for the next day but will be shown on the
+  day overview for this day.
+  %br
+  = f.submit yield(:submit), class: 'btn btn-large btn-primary'

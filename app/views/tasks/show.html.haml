@@ -1,17 +1,1 @@
-.row
-  %table
-    %tr
-      %strong
-        = @event.name
-    - unless @event.location.blank?
-      %tr
-        %td Location: #{@event.location}
-    %tr
-      %td Date: #{link_to format_date(@event.date), day_path(@event.date)}
-    %tr
-      %td Timeframe: #{@event.earliest}-#{@event.latest}
-    %tr
-      %td Length: #{@event.length} #{@event.time_units}
-    %tr
-      %td
-        = link_to 'edit', edit_user_task_path(current_user, @event)
+= render partial: 'task', object: @event
