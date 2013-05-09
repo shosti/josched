@@ -36,4 +36,13 @@ Josched::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.default_url_options = { :host => 'josched.dev' }
+
+end
+
+unless $rails_rake_task
+  Debugger.start_remote
+  Debugger.settings[:autoeval] = true
+  Debugger.settings[:autolist] = 1
+  Debugger.settings[:reload_source_on_change] = true
+  Debugger.start_remote
 end
