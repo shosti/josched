@@ -11,16 +11,19 @@ group :assets do
 end
 
 group :development, :test do
+  gem 'sqlite3', '1.3.7'
+  gem 'debugger', git: "git://github.com/cldwalker/debugger"
+end
+
+group :test do
+  gem 'webmock', '1.11.0'
   gem 'rspec-rails', '2.13.1'
   gem 'guard-rspec', '2.6.0'
   gem 'factory_girl_rails', '4.2.1'
   gem 'database_cleaner', '0.9.1'
   gem 'capybara', '2.1.0'
-  gem 'sqlite3', '1.3.7'
-  gem 'turnip', '1.1.0'
-  gem 'debugger', git: "git://github.com/cldwalker/debugger"
   gem 'simplecov', '0.8.0.pre', require: false
-  gem 'webmock', '1.11.0'
+  gem 'turnip', '1.1.0'
 end
 
 group :production do
