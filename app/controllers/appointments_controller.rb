@@ -1,37 +1,23 @@
 class AppointmentsController < EventsController
   def new
-    @appointment = Appointment.new
+    @event = Appointment.new
   end
 
   def create
-    @appointment = current_user.appointments.build(params[:appointment])
-    if @appointment.save
+    @event = current_user.appointments.build(params[:appointment])
+    if @event.save
       flash[:success] = "Appointment scheduled"
-      redirect_to day_path(@appointment.date)
+      redirect_to day_path(@event.date)
     else
       render 'new'
     end
   end
 
-  def edit
-    @appointment = current_user.appointments.find(params[:id])
-  end
-
-  def show
-    @appointment = current_user.appointments.find(params[:id])
-  end
-
   def update
-    @appointment = current_user.appointments.find(params[:id])
-    if @appointment.update_attributes(params[:appointment])
+    @event = current_user.appointments.find(params[:id])
+    if @event.update_attributes(params[:appointment])
       flash[:success] = "Appointment updated"
-      redirect_to [current_user, @appointment]
+      redirect_to [current_user, @event]
     end
-  end
-
-  def destroy
-    current_user.appointments.find(params[:id]).destroy
-    flash[:success] = "Appointment deleted"
-    redirect_to day_path('today')
   end
 end

@@ -12,11 +12,11 @@ Feature: Automatically scheduling tasks
 
   Scenario: Scheduling tasks
     When I schedule the following tasks:
-    | Task            | Timeframe        | Length     |
-    | Eat breakfast   | 8:00 AM-9:00 AM  | 15 minutes |
-    | Walk dog        | 8:00 AM-11:00 AM | 30 minutes |
-    | Work on project | 9:00 AM-12:00 PM | 1 hour     |
-    | Work on project | 12:00 PM-5:00 PM | 1 hour     |
+    | Task                  | Timeframe        | Length     |
+    | Eat breakfast         | 8:00 AM-9:00 AM  | 15 minutes |
+    | Walk dog              | 8:00 AM-11:00 AM | 30 minutes |
+    | Work on project       | 9:00 AM-12:00 PM | 1 hour     |
+    | Work on project again | 12:00 PM-5:00 PM | 1 hour     |
     And I go to today's overview page
     Then I should see all of my appointments
-    And I should all of my tasks scheduled correctly
+    And I should see all of my tasks scheduled correctly

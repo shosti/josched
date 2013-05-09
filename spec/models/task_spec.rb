@@ -64,4 +64,48 @@ describe Task do
     t3 = Task.find(t3.id)
     expect([t3.length, t3.time_units]).to eql [1.5, 'hours']
   end
+
+  describe "interacting with SchedLogic" do
+    let(:new_task) do
+      create(:task,
+             length: 1.5,
+             time_units: 'hours',
+             earliest: '8:00 AM',
+             latest: '12:00 PM')
+    end
+
+    it "can be represented as a hash for the SchedLogic API" do
+      expect(new_task.to_schedlogic).to eql({ earliest: 4 * 4,
+                                       latest: 4 * 8,
+                                       length: 6,
+                                       id: new_task.id })
+    end
+
+    it "can be concretely scheduled" do
+      new_task.schedule(4 * 4, 4 * 4 + 6)
+      new_task.should be_valid
+      expect(new_task.start_time).to eql '8:00 AM'
+      expect(new_task.end_time).to eql '9:30 AM'
+    end
+
+    it "is invalid if not scheduled in the proper time window" do
+      new_task.schedule(0, 6)
+      new_task.should_not be_valid
+    end
+
+    it "is invalid if not scheduled with proper length" do
+      new_task.schedule(4 * 4, 4 * 4 + 8)
+      new_task.should_not be_valid
+    end
+
+    it "can be scheduled from SchedLogic data" do
+      Task.schedule_task({ 'id' => new_task.id,
+                           'start' => 4 * 4,
+                           'end' => 4 * 4 + 6 })
+      t = Task.find(new_task.id)
+      t.should be_valid
+      expect(t.start_time).to eql '8:00 AM'
+      expect(t.end_time).to eql '9:30 AM'
+    end
+  end
 end

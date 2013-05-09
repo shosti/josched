@@ -1,16 +1,17 @@
 .row
-%table
-  %tr
-    %td
-      %strong
-        = @appointment.name
-  - if @appointment.location && @appointment.location != ""
+  %table
     %tr
-      %td Location: #{@appointment.location}
-  %tr
-    %td Date: #{link_to format_date(@appointment.date), day_path(@appointment.date)}
-  %tr
-    %td Time: #{@appointment.start_time}-#{@appointment.end_time}
-  %tr
-    %td
-      = link_to 'edit', edit_user_appointment_path(current_user, @appointment)
+      %td
+        %strong
+          = @event.name
+    - unless @event.location.blank?
+      %tr
+        %td Location: #{@event.location}
+    %tr
+      %td Date:
+      = link_to format_date(@event.date), day_path(@event.date)
+    %tr
+      %td Time: #{@event.start_time}-#{@event.end_time}
+    %tr
+      %td
+        = link_to 'edit', edit_user_appointment_path(current_user, @event)

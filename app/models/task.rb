@@ -1,5 +1,5 @@
 class Task < Event
-  # belongs_to :user
+  belongs_to :user
   attr_writer :earliest, :latest, :length, :time_units
   attr_accessible(:earliest,
                   :latest,
@@ -15,6 +15,7 @@ class Task < Event
   validates :latest_quart, presence: true
   validates :length_quart, presence: true
   validate :earliest_and_latest_must_be_valid_times
+  validate :schedule_must_be_in_window
 
   def saveable?
     true
@@ -54,7 +55,46 @@ class Task < Event
     end
   end
 
+  def to_schedlogic
+    { earliest: earliest_quart,
+      latest: latest_quart,
+      length: length_quart,
+      id: id }
+  end
+
+  def schedule(start_quart, end_quart)
+    self.start_min = start_quart * MINUTES_IN_QUART
+    self.end_min = end_quart * MINUTES_IN_QUART
+    self
+  end
+
+  def self.schedule_task(task_data)
+    task = Task.find(task_data['id'])
+    task.schedule(task_data['start'], task_data['end'])
+    task.save!
+    task
+  end
+
   private
+
+  def schedule_must_be_in_window
+    if self.start_min && self.end_min
+      start_quart = self.start_min / MINUTES_IN_QUART
+      end_quart = self.end_min / MINUTES_IN_QUART
+
+      if start_quart < earliest_quart
+        errors.add(:start_time, "must be after the earliest time")
+      end
+
+      if end_quart > latest_quart
+        errors.add(:end_time, "must be before the latest time")
+      end
+
+      if end_quart - start_quart > self.length_quart
+        errors.add(:length, "must be equal to scheduled length")
+      end
+    end
+  end
 
   def earliest_and_latest_must_be_valid_times
     if self.earliest_quart >= self.latest_quart

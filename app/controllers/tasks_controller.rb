@@ -1,4 +1,4 @@
-class TasksController < ApplicationController
+class TasksController < EventsController
   def new
     @event = Task.new
   end
@@ -7,7 +7,7 @@ class TasksController < ApplicationController
     @event = current_user.tasks.build(params[:task])
     if @event.save
       flash[:success] = "Task scheduled"
-      redirect_to day_path(@event.date)
+      redirect_to [current_user, @event]
     else
       render 'new'
     end

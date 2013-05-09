@@ -3,4 +3,4 @@
   %h1 Edit an appointment
 .row
   = render 'appointment_form'
-  = button_to "Delete appointment", user_appointment_path(current_user, @appointment), method: 'delete', class: 'btn btn-large btn-danger'
+  = button_to "Delete appointment", user_appointment_path(current_user, @event), method: 'delete', class: 'btn btn-large btn-danger'
