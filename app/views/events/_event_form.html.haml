@@ -5,7 +5,7 @@
   = f.label :location
   = f.text_field :location
   = f.label :date
-  = f.text_field :date, type: 'date'
+  = f.text_field :date, type: 'date', value: @event.date || params[:date] || Date.today
   - if appointment? @event
     = f.label :start_time
     = f.text_field :start_time,               |
@@ -27,8 +27,6 @@
     = f.label :length
     = f.text_field :length, type: 'number'
     = f.select :time_units, ['minutes', 'hours'], value: 'minutes'
-  %div Note: Times scheduled after midnight but before 4:00 AM
-  will be scheduled for the next day but will be shown on the
-  day overview for this day.
+  %div Note: Times scheduled after midnight but before 4:00 AM will be scheduled for the next day but will be shown on the day overview for this day.
   %br
   = f.submit yield(:submit), class: 'btn btn-large btn-primary'
