@@ -15,10 +15,10 @@ describe Day do
   describe "getting events for a day" do
     before do
       5.times do
-        create(:appointment, date: 3.weeks.ago, user: user)
+        create(:appointment, date: 3.weeks.ago.to_date, user: user)
       end
       3.times do
-        create(:appointment, date: 1.week.ago, user: user)
+        create(:appointment, date: Date.today - 1.week, user: user)
       end
       2.times do
         create(:appointment, date: Date.parse('2013-03-12'), user: user)

@@ -13,6 +13,11 @@ class TasksController < EventsController
     end
   end
 
+  def index
+    @type = 'Task'
+    super
+  end
+
   def update
     @event = current_user.tasks.find(params[:id])
     if @event.update_attributes(params[:task])

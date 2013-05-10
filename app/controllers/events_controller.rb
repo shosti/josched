@@ -6,15 +6,6 @@ class EventsController < ApplicationController
     @event = current_user.events.find(params[:id])
   end
 
-  def index
-    if params[:date]
-      @date = Day.parse_date(params[:date])
-      @events = current_user.events.find_all_by_date(@date)
-    else
-      @events = current_user.events
-    end
-  end
-
   def show
     @event = current_user.events.find(params[:id])
   end
@@ -25,6 +16,15 @@ class EventsController < ApplicationController
     event.destroy
     flash[:success] = "#{type} deleted"
     redirect_to day_path('today')
+  end
+
+  def index
+    if params[:date]
+      @date = Day.parse_date(params[:date])
+      @events = current_user.events.where(type: @type, date: @date)
+    else
+      @events = current_user.events.find_all_by_type(@type)
+    end
   end
 
   private

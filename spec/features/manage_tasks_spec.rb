@@ -32,7 +32,8 @@ feature "Manage tasks" do
     end
 
     scenario "with invalid information" do
-      fill_in "Name", with: "Work"
+      fill_in 'Name', with: "Work"
+      fill_in 'Date', with: ""
       click_button 'Schedule'
 
       expect(page).to have_text "Date can't be blank"
@@ -69,13 +70,15 @@ feature "Manage tasks" do
   describe "listing" do
     let!(:task1) { create(:task, user: user, date: Date.today) }
     let!(:task2) { create(:task, user: user, date: Date.today) }
-    let!(:task3) { create(:task, user: user, date: 1.day.ago.to_date) }
+    let!(:task3) { create(:task, user: user, date: Date.today - 1.day) }
+    let!(:appt) { create(:appointment, user: user, date: Date.today) }
 
     scenario "all appointments" do
       visit user_tasks_path(user, as: user)
       page.should have_text task1.name
       page.should have_text task2.name
       page.should have_text task3.name
+      page.should_not have_text appt.name
     end
 
     scenario "appointments for a specific day" do
@@ -84,6 +87,7 @@ feature "Manage tasks" do
       page.should have_text task1.name
       page.should have_text task2.name
       page.should_not have_text task3.name
+      page.should_not have_text appt.name
     end
   end
 end

@@ -13,6 +13,11 @@ class AppointmentsController < EventsController
     end
   end
 
+  def index
+    @type = 'Appointment'
+    super
+  end
+
   def update
     @event = current_user.appointments.find(params[:id])
     if @event.update_attributes(params[:appointment])

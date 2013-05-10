@@ -29,9 +29,12 @@ feature "Manage appointments" do
 
     scenario "with invalid information" do
       fill_in 'Name', with: "Dentist"
+      fill_in 'Date', with: ""
       click_button 'Schedule'
 
       expect(page).to have_text "Date can't be blank"
+      expect(page).to have_text "Start time can't be blank"
+      expect(page).to have_text "End time can't be blank"
     end
   end
 
@@ -55,13 +58,15 @@ feature "Manage appointments" do
   describe "listing" do
     let!(:appt1) { create(:appointment, user: user, date: Date.today) }
     let!(:appt2) { create(:appointment, user: user, date: Date.today) }
-    let!(:appt3) { create(:appointment, user: user, date: 1.day.ago.to_date) }
+    let!(:appt3) { create(:appointment, user: user, date: Date.today - 1.day) }
+    let!(:task) { create(:task, user: user, date: Date.today) }
 
     scenario "all appointments" do
       visit user_appointments_path(user, as: user)
       page.should have_text appt1.name
       page.should have_text appt2.name
       page.should have_text appt3.name
+      page.should_not have_text task.name
     end
 
     scenario "appointments for a specific day" do
@@ -70,6 +75,7 @@ feature "Manage appointments" do
       page.should have_text appt1.name
       page.should have_text appt2.name
       page.should_not have_text appt3.name
+      page.should_not have_text task.name
     end
   end
 
