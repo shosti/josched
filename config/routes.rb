@@ -6,5 +6,6 @@ Josched::Application.routes.draw do
     resources :tasks
   end
 
+  get 'day/find', to: 'day#find'
   resources :day, only: :show
 end

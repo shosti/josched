@@ -1,16 +1,17 @@
-%table
-  %tr
-    %strong
-      = task.name
-  - unless task.location.blank?
+= div_for task do
+  %table
     %tr
-      %td Location: #{task.location}
-  %tr
-    %td Date: #{link_to format_date(task.date), day_path(task.date)}
-  %tr
-    %td Timeframe: #{task.earliest}-#{task.latest}
-  %tr
-    %td Length: #{task_length task}
-  %tr
-    %td
-      = link_to 'edit', edit_user_task_path(current_user, task)
+      %strong
+        = task.name
+    - unless task.location.blank?
+      %tr
+        %td Location: #{task.location}
+    %tr
+      %td Date: #{link_to format_date(task.date), day_path(task.date)}
+    %tr
+      %td Timeframe: #{task.earliest}-#{task.latest}
+    %tr
+      %td Length: #{task_length task}
+    %tr
+      %td
+        = link_to 'edit', edit_user_task_path(current_user, task)

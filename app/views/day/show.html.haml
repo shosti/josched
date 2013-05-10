@@ -9,3 +9,6 @@
   = link_to('Schedule an appointment', new_user_appointment_path(current_user, date: @date), class: 'btn btn-small')
 
   = link_to('Schedule a task', new_user_task_path(current_user, date: @date), class: 'btn btn-small')
+
+.row.bottom_date_nav
+  = bottom_nav
