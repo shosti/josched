@@ -35,8 +35,15 @@ Josched::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  config.action_mailer.default_url_options = { :host => 'josched.dev' }
-
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.mandrillapp.com',
+    port: 25,
+    enable_starttls_auto: true,
+    user_name: ENV['MANDRILL_USERNAME'],
+    password: ENV['MANDRILL_APIKEY'],
+    authentication: 'login',
+    domain: 'shostisoft.com'
+  }
 end
 
 unless $rails_rake_task
