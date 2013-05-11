@@ -26,7 +26,7 @@ RSpec.configure do |config|
   config.include EventSteps
 
   config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
 
