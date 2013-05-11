@@ -69,6 +69,9 @@ Josched::Application.configure do
     authentication: 'login',
     domain: 'shostisoft.com'
   }
+  config.action_mailer.default_url_options = {
+    host: 'https://josched.herokuapp.com'
+  }
 
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
