@@ -11,7 +11,9 @@
         %ul.nav.nav-pills.pull-right
           - if signed_in?
             %li
-              = link_to current_user.email, current_user
+              = link_to(current_user.email, |
+              edit_user_path(current_user), |
+              id: 'edit-user')              |
             %li
               = link_to 'Sign out', sign_out_path, method: :delete
           - else
@@ -20,11 +22,12 @@
         %h3.muted
           = link_to 'JoSched', root_path
       %hr
-      - flash.each do |name, msg|
-        - if msg.is_a?(String)
-          %div{:class => "alert alert-#{name == :error ? "error" : "success"}"}
-            %a.close{"data-dismiss" => "alert"} ×
-            = content_tag :div, msg, :id => "flash_#{name}"
+      #flash
+        - flash.each do |name, msg|
+          - if msg.is_a?(String)
+            %div{:class => "alert alert-#{name == :error ? "error" : "success"}"}
+              %a.close{"data-dismiss" => "alert"} ×
+              = content_tag :div, msg, :id => "flash_#{name}"
 
       = yield
       .row.date-select
