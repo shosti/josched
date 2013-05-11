@@ -10,7 +10,7 @@ class Task < Event
                   :time_units)
 
   before_validation :normalize_time_units
-  before_validation :unschedule_if_necessary
+  after_validation :unschedule_if_necessary
 
   validates :earliest, presence: true
   validates :latest, presence: true
@@ -68,6 +68,14 @@ class Task < Event
     self
   end
 
+  def unschedule
+    self.start_min = nil
+    self.end_min = nil
+    @start_time = nil
+    @end_time = nil
+    self
+  end
+
   def self.schedule_task(task_data)
     task = Task.find(task_data['id'])
     task.schedule(task_data['start'], task_data['end'])
@@ -89,13 +97,6 @@ class Task < Event
 
       unschedule if unschedule_necessary
     end
-  end
-
-  def unschedule
-    self.start_min = nil
-    self.end_min = nil
-    @start_time = nil
-    @end_time = nil
   end
 
   def earliest_and_latest_must_be_valid_times

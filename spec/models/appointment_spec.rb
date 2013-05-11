@@ -68,4 +68,37 @@ describe Appointment do
     expect(appt3.to_schedlogic).to eql({ start: 22 * 4,
                                          end: 24 * 4 })
   end
+
+  it "unschedules overlapping tasks for the day when updated" do
+    overlapping_task = create(:task,
+                              user: user,
+                              date: appt.date,
+                              earliest: '1:30 PM',
+                              latest: '2:30 PM',
+                              length: 30,
+                              time_units: 'minutes',
+                              start_time: '2:00 PM',
+                              end_time: '2:30 PM')
+    ok_task = create(:task,
+                     user: user,
+                     date: appt.date.to_date + 2.days,
+                     earliest: '2:00 PM',
+                     latest: '4:00 PM',
+                     start_time: '2:30 PM',
+                     end_time: '3:00 PM',
+                     length: 30,
+                     time_units: 'minutes')
+
+    appt.start_time = '2:00 PM'
+    appt.end_time = '2:30 PM'
+    appt.save!
+
+    overlapping_task = Task.find(overlapping_task.id)
+    overlapping_task.start_time.should be_nil
+    overlapping_task.end_time.should be_nil
+
+    ok_task = Task.find(ok_task.id)
+    ok_task.start_time.should eql '2:30 PM'
+    ok_task.end_time.should eql '3:00 PM'
+  end
 end
