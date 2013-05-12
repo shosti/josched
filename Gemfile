@@ -26,6 +26,10 @@ group :test do
   gem 'turnip', '1.1.0'
 end
 
+group :production do
+  gem 'unicorn', '4.6.2'
+end
+
 gem 'pg', '0.15.1'
 gem 'jquery-rails', '2.2.1'
 gem 'bootstrap-sass', '2.3.1.0'
