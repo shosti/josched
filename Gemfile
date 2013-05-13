@@ -12,6 +12,7 @@ group :assets do
 end
 
 group :development, :test do
+  gem 'commands'
   gem 'debugger', git: "git://github.com/cldwalker/debugger"
 end
 
