@@ -17,8 +17,8 @@ describe Event do
 
   describe "should be findable by date" do
     before do
-      5.times { create(:event, date: 3.weeks.ago) }
-      2.times { create(:event, date: 3.weeks.ago.to_date) }
+      5.times { create(:appointment, date: 3.weeks.ago) }
+      2.times { create(:task, date: 3.weeks.ago.to_date) }
     end
 
     specify do

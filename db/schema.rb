@@ -11,19 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130508075623) do
+ActiveRecord::Schema.define(:version => 20130516175541) do
 
   create_table "events", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "name"
+    t.integer  "user_id",        :null => false
+    t.string   "name",           :null => false
     t.string   "location"
-    t.date     "date"
+    t.date     "date",           :null => false
     t.integer  "start_min"
     t.integer  "end_min"
     t.integer  "earliest_quart"
     t.integer  "latest_quart"
     t.integer  "length_quart"
-    t.string   "type"
+    t.string   "type",           :null => false
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
