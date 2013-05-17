@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Day do
   let(:user) { create(:user) }
 
-  it "parses dates" do
+  it 'parses dates' do
     expect(Day.parse_date('today')).to eql Date.today
     expect(Day.parse_date(nil)).to eql Date.today
     expect(Day.parse_date('')).to eql Date.today
@@ -12,7 +12,7 @@ describe Day do
     expect(Day.parse_date(Date.today)).to eql Date.today
   end
 
-  describe "getting events for a day" do
+  describe 'getting events for a day' do
     before do
       5.times do
         create(:appointment, date: 3.weeks.ago.to_date, user: user)
@@ -51,7 +51,7 @@ describe Day do
     end
   end
 
-  describe "scheduling free time" do
+  describe 'scheduling free time' do
     let(:date) { 1.day.ago.to_date }
     let(:user) { create(:user) }
     let(:appts) do
@@ -68,7 +68,7 @@ describe Day do
 
     before { schedule_appts appts, date, user }
 
-    it "schedules in free time for times greater than 1 hour" do
+    it 'schedules in free time for times greater than 1 hour' do
       day = Day.find(date, user)
       day.count.should eql appts.count + free_times.count
 
@@ -80,7 +80,7 @@ describe Day do
     end
   end
 
-  describe "merging and processing appointments for the SchedLogic API" do
+  describe 'merging and processing appointments for the SchedLogic API' do
     let(:date) { 3.days.ago.to_date }
     let(:appts) do
       [['9:35 AM', '10:46 AM'],
@@ -95,11 +95,11 @@ describe Day do
         to eql([{ start: 5 * 4 + 2,
                   end: 7 * 4 + 2 },
                 { start: 11 * 4 + 1,
-                  end: 11 * 4 + 3}])
+                  end: 11 * 4 + 3 }])
     end
   end
 
-  describe "processing tasks for the SchedLogic API" do
+  describe 'processing tasks for the SchedLogic API' do
     let(:date) { 4.days.ago.to_date }
     let(:tasks) do
       (1..4).map { create(:task) }
@@ -119,7 +119,7 @@ describe Day do
     end
   end
 
-  describe "scheduling using SchedLogic" do
+  describe 'scheduling using SchedLogic' do
     let(:date) { 1.week.ago.to_date }
     let(:appts) do
       schedule_appts([['8:00 AM', '8:30 AM'],
@@ -133,7 +133,7 @@ describe Day do
                      date, user)
     end
     let(:response) do
-      [{ 'tasks' => [{'start' => 18,
+      [{ 'tasks' => [{ 'start' => 18,
                       'end' => 20,
                       'id' => tasks[0].id },
                     { 'start' => 27,
@@ -145,11 +145,11 @@ describe Day do
         to_return(body: ActiveSupport::JSON.encode(response))
     end
 
-    it "calls the SchedLogic API" do
+    it 'calls the SchedLogic API' do
       expect(Day.schedlogic(tasks, appts, 0)).to eql response[0]['tasks']
     end
 
-    it "schedules the day based on SchedLogic" do
+    it 'schedules the day based on SchedLogic' do
       day = Day.schedule_day tasks, appts, 0
       expect(day.map(&:start_time)).
         to eql ['8:00 AM', '8:30 AM', '10:00 AM', '10:45 AM', '3:00 PM']

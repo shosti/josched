@@ -1,5 +1,5 @@
 module EventSteps
-  step "I work from home" do
+  step 'I work from home' do
     @user = create(:user)
   end
 
@@ -15,7 +15,7 @@ module EventSteps
     end
   end
 
-  step "my day looks like this:" do |appts_table|
+  step 'my day looks like this:' do |appts_table|
     @appts = appts_table.hashes.map do |appt|
       name = appt['Task']
       start_time, end_time = times(appt['Time'])
@@ -37,14 +37,14 @@ module EventSteps
     visit day_path('today', as: @user)
   end
 
-  step "I should see all of my appointments" do
+  step 'I should see all of my appointments' do
     @appts.each do |appt|
       page.should have_text appt[:name]
       page.should have_text "#{appt[:start_time]}-#{appt[:end_time]}"
     end
   end
 
-  step "I should see the following free times:" do |times_table|
+  step 'I should see the following free times:' do |times_table|
     times_table.hashes.each do |time_h|
       t = time_h['Time']
       page.should have_text "Free #{t}"

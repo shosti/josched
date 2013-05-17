@@ -1,5 +1,5 @@
 module EventSteps
-  step "I schedule the following tasks:" do |tasks_table|
+  step 'I schedule the following tasks:' do |tasks_table|
     stub_impossible
 
     @tasks = tasks_table.hashes.map do |task|
@@ -13,9 +13,7 @@ module EventSteps
       fill_in 'Earliest', with: earliest
       fill_in 'Latest', with: latest
       fill_in 'Length', with: length
-      if units.match /hours?/
-        select 'hours', from: 'task_time_units'
-      end
+      select 'hours', from: 'task_time_units' if units.match(/hours?/)
       click_button 'Schedule'
 
       { name: name,
@@ -26,16 +24,16 @@ module EventSteps
     end
 
     response = [{ 'tasks' =>
-                  [{'start' => 19, 'end' => 20, 'id' => @tasks[0][:id]},
-                   {'start' => 17, 'end' => 19, 'id' => @tasks[1][:id]},
-                   {'start' => 24, 'end' => 28, 'id' => @tasks[2][:id]},
-                   {'start' => 32, 'end' => 36, 'id' => @tasks[3][:id]}]}]
+                  [{ 'start' => 19, 'end' => 20, 'id' => @tasks[0][:id] },
+                   { 'start' => 17, 'end' => 19, 'id' => @tasks[1][:id] },
+                   { 'start' => 24, 'end' => 28, 'id' => @tasks[2][:id] },
+                   { 'start' => 32, 'end' => 36, 'id' => @tasks[3][:id] }] }]
 
     stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
       to_return(body: ActiveSupport::JSON.encode(response))
   end
 
-  step "I should see all of my tasks scheduled correctly" do
+  step 'I should see all of my tasks scheduled correctly' do
     @tasks.each do |task|
       match = page.text.match(/#{task[:name]}\s+([:0-9APM ]+)-([:0-9APM ]+)/)
       expect(match).to_not be_nil
@@ -47,18 +45,18 @@ module EventSteps
     end
   end
 
-  step "I schedule a set of tasks that is impossible" do
+  step 'I schedule a set of tasks that is impossible' do
     create(:task, user: @user, date: Date.today)
     stub_impossible
   end
 
-  step "I schedule a set of tasks that is too hard for SchedLogic" do
+  step 'I schedule a set of tasks that is too hard for SchedLogic' do
     create(:task, user: @user, date: Date.today)
     stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
       to_return(body: ActiveSupport::JSON.encode('failure'))
   end
 
-  step "I should see a(n) :error_msg error page" do |error_msg|
+  step 'I should see a(n) :error_msg error page' do |error_msg|
     page.should have_text error_msg
   end
 

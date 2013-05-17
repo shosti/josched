@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Managing user options" do
+feature 'Managing user options' do
   let(:user) { create(:user) }
 
   before do
@@ -8,18 +8,18 @@ feature "Managing user options" do
     click_link 'edit-user'
   end
 
-  describe "change password" do
+  describe 'change password' do
     before do
       fill_in 'New password', with: 'booglie'
       click_button 'Change password'
     end
 
-    scenario "after password change" do
+    scenario 'after password change' do
       page.should have_text user.email
       page.should have_text 'Password changed'
     end
 
-    scenario "re-signing in" do
+    scenario 're-signing in' do
       click_link 'Sign out'
       click_link 'Sign in'
       fill_in 'Email', with: user.email
@@ -30,7 +30,7 @@ feature "Managing user options" do
     end
   end
 
-  scenario "deleting account" do
+  scenario 'deleting account' do
     user_id = user.id
     click_button 'Delete account'
 

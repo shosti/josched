@@ -85,10 +85,10 @@ class Day
   end
 
   def self.schedule_day(tasks, appts, n)
-    if tasks.any? {|t| t.start_min.blank? || t.end_min.blank? }
+    if tasks.any? { |t| t.start_min.blank? || t.end_min.blank? }
       tasks_data = Day.schedlogic(tasks, appts, n)
       tasks = tasks.map do |task|
-        task_data = tasks_data.find {|t| t['id'] == task.id }
+        task_data = tasks_data.find { |t| t['id'] == task.id }
         task.schedule(task_data['start'], task_data['end'])
       end
     end

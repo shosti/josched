@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Event do
-  it "can convert between time and minutes" do
+  it 'can convert between time and minutes' do
     four_am = 4 * 60
 
     expect(Event.time_to_min('4:00 AM')).to eql(0)
@@ -15,7 +15,7 @@ describe Event do
     expect(Event.min_to_time(13 * 60 + 30)).to eql('5:30 PM')
   end
 
-  describe "should be findable by date" do
+  describe 'should be findable by date' do
     before do
       5.times { create(:appointment, date: 3.weeks.ago) }
       2.times { create(:task, date: 3.weeks.ago.to_date) }

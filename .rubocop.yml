@@ -1,0 +1,9 @@
+inherit_from: ../../../.rubocop.yml
+
+AllCops:
+  Excludes:
+    - db/**
+    - config/**
+    - script/**
+    - spec/integration/**
+    - spec/support/integration.rb

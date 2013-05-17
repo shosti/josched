@@ -102,15 +102,15 @@ class Task < Event
   def earliest_and_latest_must_be_valid_times
     if self.earliest_quart && self.latest_quart
       if self.earliest_quart >= self.latest_quart
-        errors.add(:latest, "must be after earliest")
+        errors.add(:latest, 'must be after earliest')
       end
 
       if self.earliest_quart >= 24 * QUARTS_IN_HOUR
-        errors.add(:earliest, "is an invalid time")
+        errors.add(:earliest, 'is an invalid time')
       end
 
       if self.latest_quart > 24 * QUARTS_IN_HOUR
-        errors.add(:latest, "is an invalid time")
+        errors.add(:latest, 'is an invalid time')
       end
     end
   end

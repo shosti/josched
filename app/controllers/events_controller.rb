@@ -30,7 +30,8 @@ class EventsController < ApplicationController
   private
 
   def correct_user
-    redirect_to day_path('today') if
-      current_user.id != params[:user_id].to_i
+    if current_user.id != params[:user_id].to_i
+      redirect_to day_path('today')
+    end
   end
 end

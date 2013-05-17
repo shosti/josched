@@ -1,9 +1,7 @@
 class WelcomeController < ApplicationController
 
   def index
-    if signed_in?
-      redirect_to day_path('today')
-    end
+    redirect_to day_path('today') if signed_in?
   end
 
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Site navigation" do
+feature 'Site navigation' do
   let(:user) { create(:user) }
   let!(:today_appts) do
     (0...3).map do
@@ -13,7 +13,7 @@ feature "Site navigation" do
     end
   end
 
-  scenario "top navigation bar" do
+  scenario 'top navigation bar' do
     visit day_path(Date.today - 5.days, as: user)
     fill_in 'nav-date', with: Date.today
     click_button 'Go to day'
@@ -24,7 +24,7 @@ feature "Site navigation" do
     should_see_tomorrow_appts
   end
 
-  scenario "next and previous day" do
+  scenario 'next and previous day' do
     visit day_path(Date.today, as: user)
     click_link 'Next day'
     should_see_tomorrow_appts
