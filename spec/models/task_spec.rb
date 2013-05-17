@@ -8,79 +8,108 @@ describe Task do
     it { should be_saveable }
   end
 
-  it 'stores times as quarter-hours since 4 AM, rounded inward' do
-    t1 = create(:task, earliest: '4:00 AM', latest: '8:00 AM')
-    expect(t1.earliest_quart).to eql 0
-    expect(t1.latest_quart).to eql (4 * 4)
+  describe 'storing times as quarter-hours since 4 AM, rounded inward' do
+    it 'stores 4-8 AM as 0-16' do
+      t = create(:task, earliest: '4:00 AM', latest: '8:00 AM')
+      expect(t.earliest_quart).to eql 0
+      expect(t.latest_quart).to eql (4 * 4)
+    end
 
-    t2 = create(:task, earliest: '12:01 PM', latest: '1:59 PM')
-    expect(t2.earliest_quart).to eql (8 * 4 + 1)
-    expect(t2.latest_quart).to eql (9 * 4 + 3)
-    expect(Task.find(t2.id).earliest).to eql '12:15 PM'
-    expect(Task.find(t2.id).latest).to eql '1:45 PM'
+    it 'stores 12:01-1:59 as 33-39' do
+      t = create(:task, earliest: '12:01 PM', latest: '1:59 PM')
+      expect(t.earliest_quart).to eql (8 * 4 + 1)
+      expect(t.latest_quart).to eql (9 * 4 + 3)
+      expect(Task.find(t.id).earliest).to eql '12:15 PM'
+      expect(Task.find(t.id).latest).to eql '1:45 PM'
+    end
 
-    t3 = create(:task, earliest: '4:00 AM', latest: '4:00 AM')
-    expect(t3.earliest_quart).to eql 0
-    expect(t3.latest_quart).to eql 24 * 4
+    it 'stores 4 AM-4AM as 0-96' do
+      t = create(:task, earliest: '4:00 AM', latest: '4:00 AM')
+      expect(t.earliest_quart).to eql 0
+      expect(t.latest_quart).to eql 24 * 4
+    end
   end
 
-  it 'validates for invalid times' do
-    t1 = build(:task, earliest: '3:00 AM', latest: '5:00 AM')
-    t1.should_not be_valid
+  describe 'validating times' do
+    it 'cannot have times that overlap 4:00 AM' do
+      t = build(:task, earliest: '3:00 AM', latest: '5:00 AM')
+      t.should_not be_valid
+    end
 
-    t2 = build(:task,
-               earliest: nil,
-               latest: nil,
-               earliest_quart: 24 * 4,
-               latest_quart: 24 * 4 + 1)
-    t2.should_not be_valid
+    it 'cannot hold times greater than 96' do
+      t = build(
+        :task,
+        earliest: nil,
+        latest: nil,
+        earliest_quart: 24 * 4,
+        latest_quart: 24 * 4 + 1)
+      t.should_not be_valid
+    end
   end
 
-  it 'stores length as quarter-hours, rounded up' do
-    t1 = create(:task, length: 30, time_units: 'minutes')
-    expect(t1.length_quart).to eql 2
+  describe 'storing length as quarter-hours, rounded up' do
+    it 'stores 30 minutes as 2 quarts' do
+      t = create(:task, length: 30, time_units: 'minutes')
+      expect(t.length_quart).to eql 2
+    end
 
-    t2 = create(:task, length: 82, time_units: 'minutes')
-    expect(t2.length_quart).to eql 6
+    it 'stores 82 minutes as 6 quarts' do
+      t = create(:task, length: 82, time_units: 'minutes')
+      expect(t.length_quart).to eql 6
+    end
 
-    t3 = create(:task, length: 2, time_units: 'hours')
-    expect(t3.length_quart).to eql 2 * 4
+    it 'stores 2 hours as 8 quarts' do
+      t = create(:task, length: 2, time_units: 'hours')
+      expect(t.length_quart).to eql 2 * 4
+    end
 
-    t4 = create(:task, length: 1.5, time_units: 'hours')
-    expect(t4.length_quart).to eql 6
+    it 'stores 1.5 hours as 6 quarts' do
+      t = create(:task, length: 1.5, time_units: 'hours')
+      expect(t.length_quart).to eql 6
+    end
 
-    t5 = create(:task, length: 1.6, time_units: 'hours')
-    expect(t5.length_quart).to eql 7
+    it 'stores 1.6 hours as 7 quarts' do
+      t = create(:task, length: 1.6, time_units: 'hours')
+      expect(t.length_quart).to eql 7
+    end
   end
 
-  it 'nicely reports time' do
-    t1 = create(:task, length: 1.5, time_units: 'hours')
-    t1 = Task.find(t1.id)
-    expect([t1.length, t1.time_units]).to eql [1.5, 'hours']
+  describe 'nicely displaying time' do
+    it 'displays 1.5 hours as 1.5 hours' do
+      t = create(:task, length: 1.5, time_units: 'hours')
+      t = Task.find(t.id)
+      expect([t.length, t.time_units]).to eql [1.5, 'hours']
+    end
 
-    t2 = create(:task, length: 0.25, time_units: 'hours')
-    t2 = Task.find(t2.id)
-    expect([t2.length, t2.time_units]).to eql [15, 'minutes']
+    it 'displays 0.25 hours as 15 minutes' do
+      t = create(:task, length: 0.25, time_units: 'hours')
+      t = Task.find(t.id)
+      expect([t.length, t.time_units]).to eql [15, 'minutes']
+    end
 
-    t3 = create(:task, length: 83, time_units: 'minutes')
-    t3 = Task.find(t3.id)
-    expect([t3.length, t3.time_units]).to eql [1.5, 'hours']
+    it 'displays 83 minutes as 1.5 hours' do
+      t = create(:task, length: 83, time_units: 'minutes')
+      t = Task.find(t.id)
+      expect([t.length, t.time_units]).to eql [1.5, 'hours']
+    end
   end
 
   describe 'interacting with SchedLogic' do
     let(:task) do
-      create(:task,
-             length: 1.5,
-             time_units: 'hours',
-             earliest: '8:00 AM',
-             latest: '12:00 PM')
+      create(
+        :task,
+        length: 1.5,
+        time_units: 'hours',
+        earliest: '8:00 AM',
+        latest: '12:00 PM')
     end
 
     it 'can be represented as a hash for the SchedLogic API' do
-      expect(task.to_schedlogic).to eql({ earliest: 4 * 4,
-                                          latest: 4 * 8,
-                                          length: 6,
-                                          id: task.id })
+      expect(task.to_schedlogic).to eql(
+        { earliest: 4 * 4,
+          latest: 4 * 8,
+          length: 6,
+          id: task.id })
     end
 
     it 'can be concretely scheduled' do
@@ -91,9 +120,10 @@ describe Task do
     end
 
     it 'can be scheduled from SchedLogic data' do
-      Task.schedule_task({ 'id' => task.id,
-                           'start' => 4 * 4,
-                           'end' => 4 * 4 + 6 })
+      Task.schedule_task(
+        { 'id' => task.id,
+          'start' => 4 * 4,
+          'end' => 4 * 4 + 6 })
       t = Task.find(task.id)
       t.should be_valid
       expect(t.start_time).to eql '8:00 AM'
