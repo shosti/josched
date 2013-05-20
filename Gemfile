@@ -13,7 +13,7 @@ end
 
 group :development, :test do
   gem 'commands'
-  gem 'debugger', git: "git://github.com/cldwalker/debugger"
+  gem 'debugger', github: 'cldwalker/debugger'
 end
 
 group :test do
@@ -38,3 +38,5 @@ gem 'haml-rails', '0.4'
 gem 'clearance', '1.0.0.rc7'
 gem 'chronic', '0.9.1'
 gem 'newrelic_rpm', '3.6.2.96'
+gem 'json', '1.8.0'
+gem 'figaro', '0.6.4'
