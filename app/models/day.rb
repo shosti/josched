@@ -77,7 +77,7 @@ class Day
       elsif data == 'failure'
         raise JoSched::ScheduleFailureException
       else
-        data[n]['tasks']
+        data[n]
       end
     else
       raise JoSched::ScheduleFailureException

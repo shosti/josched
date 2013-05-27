@@ -30,20 +30,20 @@ describe Day do
 
     specify do
       expect(Day.find(3.weeks.ago, user).select do |e|
-               e.type == 'Appointment'
-             end.count).to eql 5
+          e.type == 'Appointment'
+        end.count).to eql 5
 
       expect(Day.find('1 week ago', user).select do |e|
-               e.type == 'Appointment'
-             end.count).to eql 3
+          e.type == 'Appointment'
+        end.count).to eql 3
 
       expect(Day.find('2013-03-12', user).select do |e|
-               e.type == 'Appointment'
-             end.count).to eql 2
+          e.type == 'Appointment'
+        end.count).to eql 2
 
       expect(Day.find('today', user).select do |e|
-               e.type == 'Appointment'
-             end.count).to eql 4
+          e.type == 'Appointment'
+        end.count).to eql 4
 
       expect do
         Day.find('notthere', user)
@@ -56,14 +56,14 @@ describe Day do
     let(:user) { create(:user) }
     let(:appts) do
       [['4:00 AM', '8:00 AM'],
-       ['10:00 AM', '11:01 AM'],
-       ['12:00 PM', '12:30 PM'],
-       ['12:30 PM', '4:00 PM'],
-       ['7:00 PM', '3:59 AM']]
+        ['10:00 AM', '11:01 AM'],
+        ['12:00 PM', '12:30 PM'],
+        ['12:30 PM', '4:00 PM'],
+        ['7:00 PM', '3:59 AM']]
     end
     let(:free_times) do
       [['8:00 AM', '10:00 AM'],
-       ['4:00 PM', '7:00 PM']]
+        ['4:00 PM', '7:00 PM']]
     end
 
     before { schedule_appts appts, date, user }
@@ -84,8 +84,8 @@ describe Day do
     let(:date) { 3.days.ago.to_date }
     let(:appts) do
       [['9:35 AM', '10:46 AM'],
-       ['11:01 AM', '11:30 AM'],
-       ['3:15 PM', '3:35 PM']]
+        ['11:01 AM', '11:30 AM'],
+        ['3:15 PM', '3:35 PM']]
     end
 
     before { schedule_appts appts, date, user }
@@ -93,9 +93,9 @@ describe Day do
     specify do
       expect(Day.appts_to_schedlogic(Appointment.find_all_by_date(date))).
         to eql([{ start: 5 * 4 + 2,
-                  end: 7 * 4 + 2 },
-                { start: 11 * 4 + 1,
-                  end: 11 * 4 + 3 }])
+            end: 7 * 4 + 2 },
+          { start: 11 * 4 + 1,
+            end: 11 * 4 + 3 }])
     end
   end
 
@@ -122,23 +122,25 @@ describe Day do
   describe 'scheduling using SchedLogic' do
     let(:date) { 1.week.ago.to_date }
     let(:appts) do
-      schedule_appts([['8:00 AM', '8:30 AM'],
-                      ['10:00 AM', '10:45 AM'],
-                      ['3:00 PM', '3:45 PM']],
-                     date, user)
+      schedule_appts([
+          ['8:00 AM', '8:30 AM'],
+          ['10:00 AM', '10:45 AM'],
+          ['3:00 PM', '3:45 PM']],
+        date, user)
     end
     let(:tasks) do
-      schedule_tasks([['8:00 AM', '10:00 AM', 30],
-                      ['10:00 AM', '3:00 PM', 60]],
-                     date, user)
+      schedule_tasks([
+          ['8:00 AM', '10:00 AM', 30],
+          ['10:00 AM', '3:00 PM', 60]],
+        date, user)
     end
     let(:response) do
-      [{ 'tasks' => [{ 'start' => 18,
-                      'end' => 20,
-                      'id' => tasks[0].id },
-                    { 'start' => 27,
-                      'end' => 31,
-                      'id' => tasks[1].id }] }]
+      [[{   'start' => 18,
+            'end' => 20,
+            'id' => tasks[0].id },
+          { 'start' => 27,
+            'end' => 31,
+            'id' => tasks[1].id }]]
     end
     before do
       stub_http_request(:get, /#{Day::SCHEDLOGIC_URL}/).
@@ -146,7 +148,7 @@ describe Day do
     end
 
     it 'calls the SchedLogic API' do
-      expect(Day.schedlogic(tasks, appts, 0)).to eql response[0]['tasks']
+      expect(Day.schedlogic(tasks, appts, 0)).to eql response[0]
     end
 
     it 'schedules the day based on SchedLogic' do
@@ -161,22 +163,24 @@ end
 
 def schedule_appts(appts, date, user)
   appts.map do |start_time, end_time|
-    create(:appointment,
-           date: date,
-           user: user,
-           start_time: start_time,
-           end_time: end_time)
+    create(
+      :appointment,
+      date: date,
+      user: user,
+      start_time: start_time,
+      end_time: end_time)
   end
 end
 
 def schedule_tasks(tasks, date, user)
   tasks.map do |earliest, latest, length|
-    create(:task,
-           date: date,
-           user: user,
-           earliest: earliest,
-           latest: latest,
-           length: length,
-           time_units: 'minutes')
+    create(
+      :task,
+      date: date,
+      user: user,
+      earliest: earliest,
+      latest: latest,
+      length: length,
+      time_units: 'minutes')
   end
 end

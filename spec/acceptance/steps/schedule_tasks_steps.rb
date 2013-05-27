@@ -23,11 +23,11 @@ module EventSteps
         length: units.match(/hours?/) ? length.to_i * 60 : length.to_i }
     end
 
-    response = [{ 'tasks' =>
-                  [{ 'start' => 19, 'end' => 20, 'id' => @tasks[0][:id] },
-                   { 'start' => 17, 'end' => 19, 'id' => @tasks[1][:id] },
-                   { 'start' => 24, 'end' => 28, 'id' => @tasks[2][:id] },
-                   { 'start' => 32, 'end' => 36, 'id' => @tasks[3][:id] }] }]
+    response = [[
+        { 'start' => 19, 'end' => 20, 'id' => @tasks[0][:id] },
+        { 'start' => 17, 'end' => 19, 'id' => @tasks[1][:id] },
+        { 'start' => 24, 'end' => 28, 'id' => @tasks[2][:id] },
+        { 'start' => 32, 'end' => 36, 'id' => @tasks[3][:id] }]]
 
     stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
       to_return(body: ActiveSupport::JSON.encode(response))
