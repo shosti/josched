@@ -24,10 +24,10 @@ module EventSteps
     end
 
     response = [[
-        { 'start' => 19, 'end' => 20, 'id' => @tasks[0][:id] },
-        { 'start' => 17, 'end' => 19, 'id' => @tasks[1][:id] },
-        { 'start' => 24, 'end' => 28, 'id' => @tasks[2][:id] },
-        { 'start' => 32, 'end' => 36, 'id' => @tasks[3][:id] }]]
+        { 'start' => 19, 'end' => 20 },
+        { 'start' => 17, 'end' => 19 },
+        { 'start' => 24, 'end' => 28 },
+        { 'start' => 32, 'end' => 36 }]]
 
     stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
       to_return(body: ActiveSupport::JSON.encode(response))

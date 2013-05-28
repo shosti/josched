@@ -87,9 +87,12 @@ class Day
   def self.schedule_day(tasks, appts, n)
     if tasks.any? { |t| t.start_min.blank? || t.end_min.blank? }
       tasks_data = Day.schedlogic(tasks, appts, n)
-      tasks = tasks.map do |task|
-        task_data = tasks_data.find { |t| t['id'] == task.id }
-        task.schedule(task_data['start'], task_data['end'])
+      begin
+        tasks.zip(tasks_data).map do |task, task_data|
+          task.schedule(task_data['start'], task_data['end'])
+        end
+      rescue
+        raise JoSched::ScheduleFailureException
       end
     end
 
@@ -102,9 +105,10 @@ class Day
       raise ActiveRecord::RecordNotFound unless date
     end
 
-    appts = user.appointments.find_all_by_date(date,
-                                               order: 'start_min ASC')
-    tasks = user.tasks.find_all_by_date(date)
+    appts = user.appointments.find_all_by_date(
+      date, order: 'start_min')
+    tasks = user.tasks.find_all_by_date(
+      date, order: 'earliest_quart, latest_quart')
 
     events = Day.schedule_day(tasks, appts, 0)
     Day.add_free_times(events)

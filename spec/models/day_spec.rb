@@ -136,11 +136,9 @@ describe Day do
     end
     let(:response) do
       [[{   'start' => 18,
-            'end' => 20,
-            'id' => tasks[0].id },
+            'end' => 20 },
           { 'start' => 27,
-            'end' => 31,
-            'id' => tasks[1].id }]]
+            'end' => 31 }]]
     end
     before do
       stub_http_request(:get, /#{Day::SCHEDLOGIC_URL}/).
