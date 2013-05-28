@@ -21,9 +21,12 @@ class EventsController < ApplicationController
   def index
     if params[:date]
       @date = Day.parse_date(params[:date])
-      @events = current_user.events.where(type: @type, date: @date)
+      @events = current_user.events.
+        where(type: @type, date: @date).
+        order(:start_min)
     else
-      @events = current_user.events.find_all_by_type(@type)
+      @events = current_user.events.
+        find_all_by_type(@type, order: 'date, start_min')
     end
   end
 
