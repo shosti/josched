@@ -11,6 +11,10 @@ group :assets do
   gem 'uglifier', '1.0.3'
 end
 
+group :development do
+  gem 'bullet'
+end
+
 group :development, :test do
   gem 'commands'
   gem 'debugger', github: 'cldwalker/debugger'
