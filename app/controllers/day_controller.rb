@@ -11,9 +11,9 @@ class DayController < ApplicationController
     @date = Day.parse_date(params[:id])
     begin
       @events = Day.find(params[:id], current_user)
-    rescue JoSched::ScheduleImpossibleException
+    rescue SchedLogic::ScheduleImpossibleException
       render 'impossible'
-    rescue JoSched::ScheduleFailureException
+    rescue SchedLogic::ScheduleFailureException
       render 'failure'
     end
   end

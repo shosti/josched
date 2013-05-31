@@ -91,8 +91,10 @@ describe Day do
     before { schedule_appts appts, date, user }
 
     specify do
-      expect(Day.appts_to_schedlogic(Appointment.find_all_by_date(date))).
-        to eql([{ start: 5 * 4 + 2,
+      expect(
+        SchedLogic.appts_to_schedlogic(Appointment.find_all_by_date(date))
+        ).to eql([{
+            start: 5 * 4 + 2,
             end: 7 * 4 + 2 },
           { start: 11 * 4 + 1,
             end: 11 * 4 + 3 }])
@@ -106,7 +108,7 @@ describe Day do
     end
 
     specify do
-      scheds = Day.tasks_to_schedlogic(tasks)
+      scheds = SchedLogic.tasks_to_schedlogic(tasks)
       4.times do |n|
         t = tasks[n]
         s = scheds[n]
@@ -141,12 +143,12 @@ describe Day do
             'end' => 31 }]]
     end
     before do
-      stub_http_request(:get, /#{Day::SCHEDLOGIC_URL}/).
+      stub_http_request(:get, /#{SchedLogic::SCHEDLOGIC_URL}/).
         to_return(body: ActiveSupport::JSON.encode(response))
     end
 
     it 'calls the SchedLogic API' do
-      expect(Day.schedlogic(tasks, appts, 0)).to eql response[0]
+      expect(SchedLogic.schedule(tasks, appts, 0)).to eql response[0]
     end
 
     it 'schedules the day based on SchedLogic' do

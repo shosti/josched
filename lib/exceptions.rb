@@ -1,4 +1,4 @@
-module JoSched
+module SchedLogic
   class ScheduleImpossibleException < StandardError
   end
 

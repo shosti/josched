@@ -15,7 +15,7 @@ feature 'Manage tasks' do
       user: user)
   end
   before do
-    stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
+    stub_request(:get, /#{SchedLogic::SCHEDLOGIC_URL}/).
       to_return(body: ActiveSupport::JSON.encode('none'))
   end
 

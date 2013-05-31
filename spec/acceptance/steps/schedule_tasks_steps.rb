@@ -29,7 +29,7 @@ module EventSteps
         { 'start' => 24, 'end' => 28 },
         { 'start' => 32, 'end' => 36 }]]
 
-    stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
+    stub_request(:get, /#{SchedLogic::SCHEDLOGIC_URL}/).
       to_return(body: ActiveSupport::JSON.encode(response))
   end
 
@@ -52,7 +52,7 @@ module EventSteps
 
   step 'I schedule a set of tasks that is too hard for SchedLogic' do
     create(:task, user: @user, date: Date.today)
-    stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
+    stub_request(:get, /#{SchedLogic::SCHEDLOGIC_URL}/).
       to_return(body: ActiveSupport::JSON.encode('failure'))
   end
 
@@ -61,7 +61,7 @@ module EventSteps
   end
 
   def stub_impossible
-    stub_request(:get, /#{Day::SCHEDLOGIC_URL}/).
+    stub_request(:get, /#{SchedLogic::SCHEDLOGIC_URL}/).
       to_return(body: ActiveSupport::JSON.encode('none'))
   end
 end
